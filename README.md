@@ -61,3 +61,19 @@ gantt
     ✂️ Découper en tronçon :4m
     ♨️ Cuisson :30m
 ```
+
+```mermaid
+mindmap
+  root)Fabrication de cookies(
+    Assemblage 🧌
+        🧈 Ramollir le beurre *5min*
+        ☕ Faire fondre le chocolat *5min*
+        🍫 Tailler le chocolat en pépite *7min*
+        🍪 Assemblage finale *30min*
+    ❄️Mettre au frais *3h*
+    Cuisson
+        🌡️ Four à température *15min*
+        ✂️ Découper en tronçon *4min*
+        ♨️ Cuisson *3x10min*
+```
+
