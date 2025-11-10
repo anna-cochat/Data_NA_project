@@ -48,7 +48,7 @@ gantt
     ☕ Faire fondre le chocolat :done, 15m
     🍫 Tailler le chocolat en pépite :done, 10m
     Peser la farine :done, 10m
-    Blanchir les oeufs
+    Blanchir les oeufs :done, 10m
     Assemblage finale :done, 30m
 
 
