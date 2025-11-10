@@ -49,7 +49,7 @@ gantt
     🍫 Tailler le chocolat en pépite :done, 10m
     Peser la farine :done, 10m
     Blanchir les oeufs
-    🍪 Assemblage finale :done, 30m
+    Assemblage finale :done, 30m
 
 
     section mettre au frais
