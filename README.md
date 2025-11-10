@@ -33,7 +33,8 @@ mindmap
     🌡️ Four à température :15m
     ✂️ Découper en tronçon :4m
     ♨️ Cuisson :30m
-
+```
+```mermaid
 gantt
     dateFormat HH:mm
     axisFormat %H:%M
