@@ -29,8 +29,8 @@ mindmap
         ✂️ Découper en tronçon *4min*
         ♨️ Cuisson *3x10min*
   ```
-
 ```mermaid
+
 gantt
     dateFormat HH:mm
     axisFormat %H:%M
@@ -44,6 +44,7 @@ gantt
     Blanchir les oeufs *10min*
     Faire fondre le chocolat avec le beurre*10min*
     Tailler le chocolat en pépite *5m*
+
 
     section mettre au frais
     ❄️Mettre au frais :active, 3h
