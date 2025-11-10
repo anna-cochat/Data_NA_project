@@ -34,6 +34,7 @@ mindmap
     ✂️ Découper en tronçon :4m
     ♨️ Cuisson :30m
 ```
+
 ```mermaid
 gantt
     dateFormat HH:mm
@@ -43,9 +44,11 @@ gantt
 
 
     section Assemblage
-    🧈Ramollir le beurre :done, 25m
+    🧈Beurre noisette :done, 25m
     ☕ Faire fondre le chocolat :done, 15m
     🍫 Tailler le chocolat en pépite :done, 10m
+    Peser la farine :done, 10m
+    Blanchir les oeufs
     🍪 Assemblage finale :done, 30m
 
 
