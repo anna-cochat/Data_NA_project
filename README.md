@@ -11,4 +11,21 @@ flowchart TD
     C -->|One| D[Laptop]
     C -->|Two| E[iPhone]
     C -->|Three| F[fa:fa-car Car]
-  
+ 
+  ```mermaid
+mindmap
+  root)Fabrication de cookies(
+    Assemblage
+        Faire le beurre noisette *10min*
+        Peser la farine *3min*
+        Blanchir les oeufs *10min*
+        Faire fondre le chocolat avec le beurre*10min*
+        Tailler le chocolat en pépite *5m*
+
+        🍪 Assemblage finale *30min*
+    ❄️Mettre au frais *3h*
+    Cuisson
+        🌡️ Four à température *15min*
+        ✂️ Découper en tronçon *4min*
+        ♨️ Cuisson *3x10min*
+  ```
