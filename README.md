@@ -33,6 +33,9 @@ mindmap
     🌡️ Four à température :15m
     ✂️ Découper en tronçon :4m
     ♨️ Cuisson :30m
+    Caca Prout
+        Pipi
+        Caca
 ```
 
 ```mermaid
