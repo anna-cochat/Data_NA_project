@@ -28,8 +28,11 @@ mindmap
         🌡️ Four à température *15min*
         ✂️ Découper en tronçon *4min*
         ♨️ Cuisson *3x10min*
-  ```
-```mermaid
+  
+    section Cuisson
+    🌡️ Four à température :15m
+    ✂️ Découper en tronçon :4m
+    ♨️ Cuisson :30m
 
 gantt
     dateFormat HH:mm
@@ -39,11 +42,10 @@ gantt
 
 
     section Assemblage
-    Faire le beurre noisette *10min*
-    Peser la farine *3min*
-    Blanchir les oeufs *10min*
-    Faire fondre le chocolat avec le beurre*10min*
-    Tailler le chocolat en pépite *5m*
+    🧈Ramollir le beurre :done, 25m
+    ☕ Faire fondre le chocolat :done, 15m
+    🍫 Tailler le chocolat en pépite :done, 10m
+    🍪 Assemblage finale :done, 30m
 
 
     section mettre au frais
