@@ -80,3 +80,15 @@ mindmap
         ♨️ Cuisson *3x10min*
 ```
 
+```mermaid
+%%{init: {"themeVariables": {"quadrant1Fill": "red", "quadrant2Fill": "orange", "quadrant3Fill": "green", "quadrant4Fill": "orange"} }}%%
+quadrantChart
+    title Cookies
+    x-axis High risk --> Low risk
+    y-axis High probability --> Low probability
+    Bacteria from flour: [0.3, 0.6]
+    Overcooking: [0.45, 0.23]
+    Eggs not white enough: [0.57, 0.69]
+    Undercooking: [0.78, 0.34]
+    Too flat: [0.40, 0.34]
+```
