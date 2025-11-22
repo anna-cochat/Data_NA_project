@@ -64,7 +64,7 @@ def clean_numeric_series(s):
 
     
     if st.str.contains(r"[A-Za-z]").any():
-        return s  # do not touch
+        return s 
 
     
     if not st.str.contains(r"\d").any():
@@ -157,7 +157,6 @@ for key in list(groups.keys()):
 
 
 def heatmap_na(df, title, missing_color="#d62728"):
-    # Sort columns by number of missing values
     sorted_cols = df.isna().sum().sort_values(ascending=False).index
     df_sorted = df[sorted_cols]
 
@@ -181,9 +180,9 @@ for group_name, columns in groups.items():
     df_block = mydf[["Country"] + columns].set_index("Country")
 
     if group_name == "Socio-Economic Indicators":
-        color = "#8b0000"     # dark red
+        color = "#8b0000"     
     else:
-        color = "#d62728"     # normal red
+        color = "#d62728"    
 
     heatmap_na(df_block, f"Heatmap des valeurs manquantes – {group_name}", missing_color=color)
     
@@ -285,7 +284,7 @@ sns.scatterplot(
     data=df_angle2,
     x="Total_Footprint_Consumption",
     y="Total_Biocapacity",
-    s=df_angle2["Population (millions)"] * 5,   # bubble size by population
+    s=df_angle2["Population (millions)"] * 5, 
     color="darkred",
     alpha=0.7
 )
