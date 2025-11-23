@@ -1,0 +1,224 @@
+{
+  "main": {
+    "id": "0168a1e31baff4e8",
+    "type": "split",
+    "children": [
+      {
+        "id": "baed601f0c179bc0",
+        "type": "tabs",
+        "dimension": 74.35897435897436,
+        "children": [
+          {
+            "id": "008261fc166907d0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "0 - Ariane/Templates/Country Profile.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Country Profile"
+            }
+          }
+        ]
+      },
+      {
+        "id": "7d2398d19eaf3a94",
+        "type": "tabs",
+        "dimension": 25.64102564102564,
+        "children": [
+          {
+            "id": "b68c3ad10b19bdd1",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "649b264524ce1934",
+    "type": "split",
+    "children": [
+      {
+        "id": "694cf7133712db76",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3d606134ee8481b1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "e4aca1dd7b40f6a3",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "459a9877f1da8031",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "9d67d6194a4731d2",
+    "type": "split",
+    "children": [
+      {
+        "id": "1fa48a64af0a3e25",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f2d8c9e081ec0500",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "0 - Ariane/Templates/Country Profile.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Country Profile"
+            }
+          },
+          {
+            "id": "9a77268e8a41dbfb",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "0 - Ariane/Templates/Country Profile.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Country Profile"
+            }
+          },
+          {
+            "id": "c7f796f96363af9f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "260b8886fb3be872",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "7ab46823c401ac26",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "0 - Ariane/Templates/Country Profile.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Country Profile"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "3d606134ee8481b1",
+  "lastOpenFiles": [
+    "1 - Exploration/Figures",
+    "1 - Exploration/007 Country Profiles/Untitled.md",
+    "0 - Ariane/Templates/Country Profile.md",
+    "0 - Ariane/Templates",
+    "0 - Ariane/READ ME.md",
+    "1 - Exploration/009 Composite Index",
+    "1 - Exploration/007 Country Profiles",
+    "1 - Exploration/006 Clustering",
+    "1 - Exploration/008 Overshoot Day",
+    "1 - Exploration/005 Governance",
+    "1 - Exploration/004 Inequality",
+    "1 - Exploration/002 Development",
+    "1 - Exploration/003 Ecology",
+    "01 - Exploration/By country/Algeria.md",
+    "Untitled.base",
+    "Projet Tuteuré/Country Analysis.md",
+    "Welcome.md"
+  ]
+}
