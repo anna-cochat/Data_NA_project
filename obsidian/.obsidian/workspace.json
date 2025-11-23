@@ -14,12 +14,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "0 - Ariane/Templates/Country Profile.md",
+                "file": "1 - Exploration/001 Missingness/blablabla babe.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Country Profile"
+              "title": "blablabla babe"
             }
           }
         ]
@@ -201,8 +201,9 @@
       "bases:Create new base": false
     }
   },
-  "active": "3d606134ee8481b1",
+  "active": "008261fc166907d0",
   "lastOpenFiles": [
+    "1 - Exploration/001 Missingness/blablabla babe.md",
     "1 - Exploration/Figures",
     "1 - Exploration/007 Country Profiles/Untitled.md",
     "0 - Ariane/Templates/Country Profile.md",
@@ -217,7 +218,6 @@
     "1 - Exploration/002 Development",
     "1 - Exploration/003 Ecology",
     "01 - Exploration/By country/Algeria.md",
-    "Untitled.base",
     "Projet Tuteuré/Country Analysis.md",
     "Welcome.md"
   ]
