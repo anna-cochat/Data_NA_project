@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "0/Templates/Country Profile.md",
+                "file": "0/READ ME.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Country Profile"
+              "title": "READ ME"
             }
           }
         ]
@@ -185,8 +185,8 @@
   },
   "active": "38433ae4683cbb39",
   "lastOpenFiles": [
-    "0/READ ME.md",
     "0/Templates/Country Profile.md",
+    "0/READ ME.md",
     "1 - Exploration/001 Missingness/blablabla babe.md",
     "1 - Exploration/Figures",
     "1 - Exploration/007 Country Profiles/Untitled.md",
