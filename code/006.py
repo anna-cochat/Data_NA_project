@@ -5,9 +5,6 @@ import pandas as pd
 import numpy as np
 import os
 
-# --------------------------------------------
-# Load data
-# --------------------------------------------
 mydf = load_mydf()
 
 FIG_DIR = "figures/006"
@@ -18,10 +15,8 @@ def savefig(name):
     plt.savefig(path, dpi=300, bbox_inches="tight")
     print(f"Figure saved: {path}")
 
-# Prepare population quartiles
 mydf["Pop_Quartile"] = pd.qcut(mydf["Population (millions)"], 4, labels=["Q1","Q2","Q3","Q4"])
 
-# 1. Footprint per capita vs GDP
 plt.figure(figsize=(8,6))
 sns.scatterplot(
     data=mydf,
@@ -39,8 +34,6 @@ plt.legend(title="Population quartile")
 
 savefig("006_Footprint_vs_GDP")
 plt.show()
-
-# 2. Biocapacity per capita vs HDI
 
 plt.figure(figsize=(8,6))
 sns.scatterplot(
@@ -60,7 +53,6 @@ plt.legend(title="Population quartile")
 savefig("006_Biocapacity_vs_HDI")
 plt.show()
 
-# 3. Ecological inequality: footprint vs biocapacity with population quartiles
 plt.figure(figsize=(9,7))
 sns.scatterplot(
     data=mydf,
@@ -71,7 +63,6 @@ sns.scatterplot(
     s=120
 )
 
-# Line of balance (equal biocapacity & footprint)
 max_val = max(
     mydf["Total_Biocapacity"].max(),
     mydf["Total_Footprint_Consumption"].max()
