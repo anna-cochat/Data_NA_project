@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "1_Exploration/003 Ecology/insights.md",
+                "file": "1_Exploration/004 Inequality/insights.md",
                 "mode": "source",
                 "source": false
               },
@@ -185,8 +185,9 @@
   },
   "active": "db793369d700e0da",
   "lastOpenFiles": [
-    "1_Exploration/002 Development/insights.md",
     "1_Exploration/003 Ecology/insights.md",
+    "1_Exploration/004 Inequality/insights.md",
+    "1_Exploration/002 Development/insights.md",
     "1_Exploration/001 Missingness/insights.md",
     "0/READ ME.md",
     "1_Exploration/001 Missingness/001_NAparpays.png",
