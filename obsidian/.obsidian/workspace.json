@@ -13,12 +13,22 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "0/READ ME.md",
+                "file": "1_Exploration/002 Development/insights.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "READ ME"
+              "title": "insights"
+            }
+          },
+          {
+            "id": "db793369d700e0da",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
         ]
@@ -185,22 +195,25 @@
   },
   "active": "38433ae4683cbb39",
   "lastOpenFiles": [
-    "0/Templates/Country Profile.md",
+    "1_Exploration/001 Missingness/insights.md",
+    "1_Exploration/002 Development/insights.md",
     "0/READ ME.md",
+    "1_Exploration/001 Missingness/001_NAparpays.png",
     "1 - Exploration/001 Missingness/blablabla babe.md",
-    "1 - Exploration/Figures",
+    "1_Exploration/009 Composite Index",
+    "1_Exploration/008 Overshoot Day",
+    "1_Exploration/007 Country Profiles",
+    "1_Exploration/006 Clustering",
+    "1_Exploration/005 Governance",
+    "1_Exploration/004 Inequality",
+    "1_Exploration/003 Ecology",
+    "1_Exploration/002 Development",
+    "1_Exploration/001 Missingness",
+    "1_Exploration",
+    "0/Templates/Country Profile.md",
     "1 - Exploration/007 Country Profiles/Untitled.md",
     "0 - Ariane/Templates/Country Profile.md",
-    "0 - Ariane/Templates",
     "0 - Ariane/READ ME.md",
-    "1 - Exploration/009 Composite Index",
-    "1 - Exploration/007 Country Profiles",
-    "1 - Exploration/006 Clustering",
-    "1 - Exploration/008 Overshoot Day",
-    "1 - Exploration/005 Governance",
-    "1 - Exploration/004 Inequality",
-    "1 - Exploration/002 Development",
-    "1 - Exploration/003 Ecology",
     "01 - Exploration/By country/Algeria.md",
     "Projet Tuteuré/Country Analysis.md",
     "Welcome.md"
