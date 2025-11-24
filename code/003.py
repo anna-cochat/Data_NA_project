@@ -1,4 +1,4 @@
-# Angle 3 — Développement vs Paradoxe de Durabilité
+# Angle 3 — Développement
 
 from preprocessing import load_mydf
 import seaborn as sns
