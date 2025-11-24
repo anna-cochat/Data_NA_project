@@ -26,7 +26,7 @@
 - La relation n’est pas linéaire → la biocapacité dépend surtout du territoire, pas de la consommation.
 ---
 
-# Histogramme – Distribution de la Balance Écologique (Bio – Empreinte)
+## Histogramme – Distribution de la Balance Écologique (Bio – Empreinte)
 
 - Distribution centrée sur **négatif** → la majorité des pays sont en déficit.
     
