@@ -17,7 +17,7 @@ def savefig(name):
     plt.savefig(path, dpi=300, bbox_inches="tight")
     print(f"Figure saved: {path}")
 
-# Préparation de la variable Eco_Balance
+# Préparation de la variable éco balance
 
 df3 = mydf.copy()
 df3["Eco_Balance"] = df3["Total_Biocapacity"] - df3["Total_Footprint_Consumption"]
