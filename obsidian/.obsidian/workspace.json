@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "1_Exploration/004 Inequality/insights.md",
+                "file": "1_Exploration/005 Regional profiles/insights.md",
                 "mode": "source",
                 "source": false
               },
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 210.5
   },
   "right": {
     "id": "9d67d6194a4731d2",
@@ -185,9 +185,11 @@
   },
   "active": "db793369d700e0da",
   "lastOpenFiles": [
-    "1_Exploration/003 Ecology/insights.md",
-    "1_Exploration/004 Inequality/insights.md",
-    "1_Exploration/002 Development/insights.md",
+    "1_Exploration/006 Inequality/insights.md",
+    "1_Exploration/005 Regional profiles/insights.md",
+    "1_Exploration/004 Production&Consumption/insights.md",
+    "1_Exploration/003 Development/insights.md",
+    "1_Exploration/002 Footprint&Biocapacity/insights.md",
     "1_Exploration/001 Missingness/insights.md",
     "0/READ ME.md",
     "1_Exploration/001 Missingness/001_NAparpays.png",
@@ -195,11 +197,11 @@
     "1_Exploration/009 Composite Index",
     "1_Exploration/008 Overshoot Day",
     "1_Exploration/007 Country Profiles",
-    "1_Exploration/006 Clustering",
-    "1_Exploration/005 Governance",
-    "1_Exploration/004 Inequality",
-    "1_Exploration/003 Ecology",
-    "1_Exploration/002 Development",
+    "1_Exploration/006 Inequality",
+    "1_Exploration/005 Regional profiles",
+    "1_Exploration/004 Production&Consumption",
+    "1_Exploration/003 Development",
+    "1_Exploration/002 Footprint&Biocapacity",
     "1_Exploration/001 Missingness",
     "1_Exploration",
     "0/Templates/Country Profile.md",
