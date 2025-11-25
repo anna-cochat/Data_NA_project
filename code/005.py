@@ -16,8 +16,6 @@ def savefig(name):
     print(f"Figure saved: {path}")
 
 
-
-
 plt.figure(figsize=(10,6))
 sns.boxplot(data=mydf, x="Region", y="Total_Footprint_Consumption")
 plt.xticks(rotation=45)
