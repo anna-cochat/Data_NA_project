@@ -92,6 +92,3 @@ plt.title("Empreinte écologique moyenne par région")
 plt.tight_layout()
 savefig("005_Regional_Average_Footprint")
 plt.show
-
-print("\n✔ Angle 5 — Regional Profiles completed!")
-print("Figures saved in:", FIG_DIR)
