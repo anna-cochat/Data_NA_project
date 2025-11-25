@@ -11,14 +11,10 @@
             "id": "db793369d700e0da",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "1_Exploration/006 Inequality/insights.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "insights"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "0 - Ariane/Templates/Country Profile.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Country Profile"
+              "title": "Backlinks"
             }
           },
           {
@@ -185,12 +180,12 @@
   },
   "active": "db793369d700e0da",
   "lastOpenFiles": [
+    "1_Exploration/001 Missingness/insights.md",
     "1_Exploration/005 Regional profiles/insights.md",
     "1_Exploration/006 Inequality/insights.md",
     "1_Exploration/004 Production&Consumption/insights.md",
     "1_Exploration/003 Development/insights.md",
     "1_Exploration/002 Footprint&Biocapacity/insights.md",
-    "1_Exploration/001 Missingness/insights.md",
     "0/READ ME.md",
     "1_Exploration/001 Missingness/001_NAparpays.png",
     "1 - Exploration/001 Missingness/blablabla babe.md",
