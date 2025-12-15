@@ -1,11 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# prendre le data set drop na sur les X et Y train et test mais pas de validation
-
 def load_mydf():
     df = pd.read_excel("data/toutlespays.xlsx")
 
+    
     rename_dict = {
         "actual \nCountry Overshoot Day \n2018": "Overshoot Day",
         "Cropland Footprint": "Cropland_Footprint_Production",
@@ -32,18 +31,23 @@ def load_mydf():
 
     df = df.rename(columns={c: rename_dict[c] for c in df.columns if c in rename_dict})
 
+    
     force_text = {"Country", "Region", "Income Group", "Overshoot Day", "Quality Score"}
 
+    
     def clean_numeric_series(s):
+        """Convert messy strings to floats, ignore non-numeric columns."""
         if s.dtype != object:
             return s
 
         st = s.astype(str).str.strip()
         st = st.replace(["-", "--", "", "…"], None)
 
+        
         if not st.str.contains(r"\d").any():
             return pd.to_numeric(st, errors="coerce")
 
+        
         st = (
             st.str.replace("\u202f", "", regex=False)
             .str.replace(" ", "", regex=False)
@@ -52,16 +56,40 @@ def load_mydf():
             .str.replace("−", "-", regex=False)
             .str.replace("%", "", regex=False)
         )
-
         return pd.to_numeric(st, errors="coerce")
 
+    
     for col in df.columns:
         if col not in force_text:
             df[col] = clean_numeric_series(df[col])
 
     return df
 
+
+
+
 df = load_mydf()
 
-df_supervised = df.dropna
-df_supervised.head(10)
+
+def overshoot_to_doy(s):
+    """Convert 'Month Day, 1900' to day-of-year (1–365)."""
+    if pd.isna(s):
+        return None
+    dt = pd.to_datetime(s, errors="coerce")
+    if pd.isna(dt):
+        return None
+    return dt.dayofyear
+
+
+df["Overshoot_Day_DOY"] = df["Overshoot Day"].apply(overshoot_to_doy)
+
+
+
+target = "Overshoot_Day_DOY"
+
+df = df[df[target].notna()]
+
+df_supervised = df.dropna(axis=0, how="any")
+
+print(df_supervised)
+
