@@ -19,7 +19,7 @@ venv/
 
 .vscode/
 
-
+notes etc/
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -30,3 +30,5 @@ venv/
 
 .cache/
 obsidian/0/
+notes
+notes/
