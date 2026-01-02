@@ -1,0 +1,1 @@
+ obsidian est un dossier perso de prise de notes pour ma réflexion, lisez mais ne modifiez pas svp c'est lié à une application locale sur mon ordi. ( si ça vous intéresse par contre je vous conseille de jeter un coup d'oeil à https://obsidian.md/)
