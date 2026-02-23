@@ -107,7 +107,6 @@ def backward_stepwise_aic(X, y):
 
     return final_model, remaining
 
-
 step_model, selected_vars = backward_stepwise_aic(X, y)
 
 print("Variables sélectionnées :")
@@ -118,3 +117,15 @@ print(step_model.summary())
 # on compte les modalités des variables catégorielles sélectionnées pour voir si on peut les garder ou pas
 print(train_cc["Quality Score_2B"].value_counts())
 print(train_cc["Quality Score_2C"].value_counts())
+
+import pickle
+
+with open("step_model.pkl", "wb") as f:
+    pickle.dump(step_model, f)
+
+# (optionnel mais très utile)
+with open("selected_vars.pkl", "wb") as f:
+    pickle.dump(selected_vars, f)
+
+
+#print(df_model["const"].head())

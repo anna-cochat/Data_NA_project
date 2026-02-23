@@ -59,7 +59,7 @@ def prepare_data():
 
     df = df.drop(columns=["Country", "Overshoot Day"])
 
-# INCOME 
+# INCOME
     df["Income Group"] = pd.Categorical(
     df["Income Group"],
     categories=["LI", "LM", "UM", "HI"],
@@ -92,7 +92,6 @@ def prepare_data():
 )
     df_model = df_model.drop(columns=["Income_Group_Code"])
     return df_imputation, df_model
-
 
 # ca cest juste des verifications pour voir si tout marchait bien tu peux supp
 
