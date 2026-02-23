@@ -67,7 +67,6 @@ def prepare_data():
     categories=["LI", "LM", "UM", "HI"],
     ordered=True
     )
-
     df["Income_Group_Code"] = (
     df["Income Group"]
     .cat.codes
