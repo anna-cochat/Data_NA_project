@@ -65,6 +65,9 @@ x_vars = [
     "Number of Countries required",
 ]
 
+print(df_imputation)
+
+
 X = df_imputation[x_vars]
 y = df_imputation[y_var]
 

@@ -43,34 +43,27 @@ y_var = "Overshoot_Day_DOY"
 # Variables explicatives utilisées pour l'imputation
 x_vars = [
     "Income_Group_Code",
-
     "SDGi",
     "Life Expectancy",
     "HDI",
     "Per Capita GDP",
     "Population (millions)",
-
     "Cropland_Footprint_Production",
     "Grazing_Footprint_Production",
     "Forest_Footprint_Production",
     "Fish_Footprint_Production",
     "BuiltUp_Footprint_Production",
     "Carbon_Footprint_Production",
-
     "Cropland_Footprint_Consumption",
     "Grazing_Footprint_Consumption",
     "Forest_Footprint_Consumption",
     "Fish_Footprint_Consumption",
-    "BuiltUp_Footprint_Consumption",
     "Carbon_Footprint_Consumption",
-
     "Cropland",
     "Grazing land",
     "Forest land",
     "Fishing ground",
-    "BuiltUp_Biocapacity",
     "Total_Biocapacity",
-
     "Ecological (Deficit) or Reserve",
     "Number of Earths required",
     "Number of Countries required",
