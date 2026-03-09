@@ -9,7 +9,6 @@ def load_mydf():
 
     rename_dict = {
         "actual \nCountry Overshoot Day \n2018": "Overshoot Day",
-
         "Cropland Footprint": "Cropland_Footprint_Production",
         "Grazing Footprint": "Grazing_Footprint_Production",
         "Forest Product Footprint": "Forest_Footprint_Production",
@@ -26,7 +25,6 @@ def load_mydf():
 
         "Built up land.2": "BuiltUp_Biocapacity",
         "Total biocapacity ": "Total_Biocapacity",
-
         "Total Ecological Footprint (Production)": "Total_Footprint_Production",
         "Total Ecological Footprint (Consumption)": "Total_Footprint_Consumption",
     }
@@ -50,8 +48,6 @@ def load_mydf():
     return df
 
 
-df = load_mydf()
-
 def prepare_data():
     df = load_mydf()
 # DOY
@@ -61,12 +57,14 @@ def prepare_data():
 
     df = df.drop(columns=["Country", "Overshoot Day"])
 
+
 # INCOME 
     df["Income Group"] = pd.Categorical(
     df["Income Group"],
     categories=["LI", "LM", "UM", "HI"],
     ordered=True
     )
+
     df["Income_Group_Code"] = (
     df["Income Group"]
     .cat.codes
@@ -91,8 +89,15 @@ def prepare_data():
     drop_first=True,
     dtype="int64"
 )
-    df_model = df_model.drop(columns=["Income_Group_Code"])
+    
+    # on enlève les totaux et les colinéaires : 
+    df_imputation = df_imputation.drop(columns=["BuiltUp_Footprint_Consumption", "BuiltUp_Biocapacity", "Total_Biocapacity", "Total_Footprint_Production", "Total_Footprint_Consumption"
+], errors="ignore")
+    df_model = df_model.drop(columns=["Income_Group_Code", "BuiltUp_Footprint_Consumption", "BuiltUp_Biocapacity", "Total_Biocapacity", "Total_Footprint_Production", "Total_Footprint_Consumption"
+], errors="ignore")
+
     return df_imputation, df_model
+
 
 if __name__ == "__main__":
     df_imputation, df_model = prepare_data()

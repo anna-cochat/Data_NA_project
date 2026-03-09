@@ -1,0 +1,153 @@
+---
+title: "vrai_afdm_projet"
+author: "Aline Vissuzaine"
+date: "2026-02-12"
+output: html_document
+---
+
+```{r}
+library(readxl)
+library(FactoMineR)
+library(factoextra)
+library(missMDA)
+
+data = read.csv("data_for_mice.csv")
+country_col <- data[ , 1]
+data2 <- data[ , -1]  # on retire la colonne pays
+data2[] <- lapply(data2, function(x) if(is.character(x)) as.factor(x) else x)
+ncp <- min(estim_ncpFAMD(data2)$ncp, 4)
+res.impute <- imputeFAMD(data2, ncp = ncp, scale = TRUE)
+nouv_data <- res.impute$completeObs
+nouv_data$Country <- country_col
+```
+
+```{r}
+nouv_data
+```
+
+```{r}
+data_afdm= nouv_data[ , !names(nouv_data) %in% "Country"]
+```
+
+
+
+```{r}
+res.famd <- FAMD(data_afdm, ncp = 5, graph = FALSE)
+```
+
+
+
+```{r}
+pays_speciaux <- c("Cabo Verde", "Cambodia", "Comoros", "Cyprus", "Dominica", 
+                   "Ecuador", "Egypt", "Equatorial Guinea", "Eritrea", 
+                   "French Guiana", "French Polynesia", "Grenada", "Guadeloupe", 
+                   "Guinea-Bissau", "Honduras", 
+                   "Korea, Democratic People's Republic of", 
+                   "Libyan Arab Jamahiriya", "Malta", "Martinique", "Mauritius", 
+                   "New Zealand", "Réunion", "Saint Lucia", "Samoa", 
+                   "Sao Tome and Principe", "Solomon Islands", "Somalia", 
+                   "South Africa", "State of Palestine", "Timor-Leste", "Tonga", 
+                   "Vanuatu", "Zambia", "Zimbabwe")
+
+# Créer le vecteur de groupes
+pays_famd <- nouv_data$Country
+
+groupes <- ifelse(pays_famd %in% pays_speciaux, "Spécial", "Autre")
+```
+
+AFDM DES INDIVIDUS SELON NA : 
+
+```{r}
+library(ggplot2)
+library(plotly)
+
+# Scree plot
+fviz_screeplot(res.famd, addlabels = TRUE, ylim = c(0, 50))
+
+# Calculer le % de manquants par pays (avant imputation)
+pct_missing <- rowMeans(is.na(data2)) * 100
+
+# Récupérer les coordonnées des individus
+ind_coord <- as.data.frame(res.famd$ind$coord)
+ind_coord$Country <- nouv_data$Country
+ind_coord$pct_missing <- pct_missing
+
+# AFDM des individus selon le pourcentage de données manquantes D1 et 2
+p1 <- ggplot(ind_coord, aes(x = Dim.1, y = Dim.2, color = pct_missing, text = Country)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black") +
+  geom_point(size = 1.5) +
+  scale_color_gradient2(low = "blue", mid = "yellow", high = "red",
+                        midpoint = median(pct_missing),
+                        name = "% manquants") +
+  theme_minimal() +
+  labs(title = "Individus FAMD colorés par % de données manquantes dim 1 et 2",
+       x = paste0("Dim 1 (", round(res.famd$eig[1,2], 1), "%)"),
+       y = paste0("Dim 2 (", round(res.famd$eig[2,2], 1), "%)"))
+
+ggplotly(p1, tooltip = "text")
+
+# AFDM des individus selon le pourcentage de données manquantes d3 et 4
+p2 <- ggplot(ind_coord, aes(x = Dim.3, y = Dim.4, color = pct_missing, text = Country)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black") +
+  geom_point(size = 1.5) +
+  scale_color_gradient2(low = "blue", mid = "yellow", high = "red",
+                        midpoint = median(pct_missing),
+                        name = "% manquants") +
+  theme_minimal() +
+  labs(title = "Individus FAMD colorés par % de données manquantes dim 3 et 4",
+       x = paste0("Dim 1 (", round(res.famd$eig[3,2], 1), "%)"),
+       y = paste0("Dim 2 (", round(res.famd$eig[4,2], 1), "%)"))
+
+ggplotly(p2, tooltip = "text")
+```
+
+AFDM DES INDIVIDUS SELON SPECIAUX OU NON : 
+
+```{r}
+# Variables
+fviz_famd_var(res.famd, repel = TRUE) 
+res.famd$eig        # valeurs propres et % d'inertie
+res.famd$ind$coord  # coordonnées des individus
+res.famd$var$coord  # coordonnées des variables
+
+# AFDM des individus selon si les pays sont spéciaux ou non
+ind_coord2 <- ind_coord
+ind_coord2$groupe <- as.factor(groupes)
+
+# AFDM spéciaux dim 1 et 2
+p3 <- ggplot(ind_coord2, aes(x = Dim.1, y = Dim.2, color = groupe, text = Country)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black") +
+  geom_point(size = 1.5) +
+  scale_color_manual(values = c("Autre" = "grey", "Spécial" = "red")) +
+  theme_minimal() +
+  labs(title = "Individus FAMD — pays spéciaux vs autres",
+       x = paste0("Dim 1 (", round(res.famd$eig[1,2], 1), "%)"),
+       y = paste0("Dim 2 (", round(res.famd$eig[2,2], 1), "%)"))
+
+ggplotly(p3, tooltip = "text")
+
+# AFDM spéciaux dim 3 et 4
+p4 <- ggplot(ind_coord2, aes(x = Dim.3, y = Dim.4, color = groupe, text = Country)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black") +
+  geom_point(size = 1.5) +
+  scale_color_manual(values = c("Autre" = "grey", "Spécial" = "red")) +
+  theme_minimal() +
+  labs(title = "Individus FAMD — pays spéciaux vs autres",
+       x = paste0("Dim 1 (", round(res.famd$eig[3,2], 1), "%)"),
+       y = paste0("Dim 2 (", round(res.famd$eig[4,2], 1), "%)"))
+
+ggplotly(p4, tooltip = "text")
+```
+
+Dim 1 et 2, pays avec NA++ = en bas à gauche 
+Dim 3 et 4, pays avec NA++ = très mal représentés
+ 
+NA  = bien représentés par dim 1 et 2 
+
+Pays spéciaux : très bien représentés par dim 1 et 2
+
+Pays spéciaux et pays avec données manquantes semblent être les mêmes

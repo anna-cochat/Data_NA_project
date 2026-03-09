@@ -91,9 +91,9 @@ def prepare_data():
 )
     
     # on enlève les totaux et les colinéaires : 
-    df_imputation = df_imputation.drop(columns=["BuiltUp_Footprint_Consumption", "BuiltUp_Biocapacity", "Total_Biocapacity", "Total_Footprint_Production", "Total_Footprint_Consumption"
+    df_imputation = df_imputation.drop(columns=["Cropland", "BuiltUp_Footprint_Consumption", "BuiltUp_Biocapacity", "Total_Biocapacity", "Total_Footprint_Production", "Total_Footprint_Consumption"
 ], errors="ignore")
-    df_model = df_model.drop(columns=["Income_Group_Code", "BuiltUp_Footprint_Consumption", "BuiltUp_Biocapacity", "Total_Biocapacity", "Total_Footprint_Production", "Total_Footprint_Consumption"
+    df_model = df_model.drop(columns=["Cropland", "Income_Group_Code", "BuiltUp_Footprint_Consumption", "BuiltUp_Biocapacity", "Total_Biocapacity", "Total_Footprint_Production", "Total_Footprint_Consumption"
 ], errors="ignore")
 
     return df_imputation, df_model

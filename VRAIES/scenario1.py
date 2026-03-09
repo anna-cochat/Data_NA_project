@@ -1,5 +1,4 @@
 from nettoyage import prepare_data
-from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 
 df_imputation, df_model = prepare_data()
@@ -10,55 +9,16 @@ print("Train lignes:", len(full_cc))
 
 y_var = "Overshoot_Day_DOY"
 
-terms_all = [
-    'SDGi',
-    'Life Expectancy',
-    'HDI',
-    'Per Capita GDP',
-    'Population (millions)',
-    'Cropland_Footprint_Production',
-    'Grazing_Footprint_Production',
-    'Forest_Footprint_Production',
-    'Fish_Footprint_Production',
-    'BuiltUp_Footprint_Production',
-    'Carbon_Footprint_Production',
-    'Cropland_Footprint_Consumption',
-    'Grazing_Footprint_Consumption',
-    'Forest_Footprint_Consumption',
-    'Fish_Footprint_Consumption',
-    'Carbon_Footprint_Consumption',
-    'Cropland',
-    'Grazing land',
-    'Forest land',
-    'Fishing ground',
-    'Ecological (Deficit) or Reserve',
-    'Number of Earths required',
-    'Number of Countries required',
-    'Income Group_LM',
-    'Income Group_UM',
-    'Income Group_HI',
-    'Region_Asia-Pacific',
-    'Carbon_Footprint_Consumption',
-    'Region_Central America/Caribbean',
-    'Region_EU',
-    'Region_Middle East/Central Asia',
-    'Region_North America',
-    'Region_Other Europe',
-    'Region_South America'
-]
-
 y = full_cc[y_var]
 
-valid_terms = [
-    c for c in terms_all
-    if full_cc[c].nunique() > 1
-]
+# Toutes les colonnes sauf la cible, filtrées directement
 
-X = full_cc[valid_terms]
+X = full_cc.drop(columns=[y_var])
+
+# vérification qu'il n'y a pas de valeur unique dans les colonnes
+X = X[[c for c in X.columns if X[c].nunique() > 1]]
 
 assert X.isna().sum().sum() == 0
-
-# stepwise regression
 
 def backward_stepwise_aic(X, y):
     X = sm.add_constant(X)
@@ -92,6 +52,10 @@ print(selected_vars)
 print(step_model.summary())
 
 
+
+# R² = 0.878, le modèle explique 88% de la variance de Overshoot-day, top !
+
+
 ########## VARIABLES SELECTIONNEES : ##########
 
 # SDGi
@@ -109,4 +73,4 @@ print(step_model.summary())
 # Ecological (Deficit) or Reserve
 # Number of Earths required
 # Income Group_HI
-# Region_Other Europe que fais exactement ce code ?
+# Region_Other Europe

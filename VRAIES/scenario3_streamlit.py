@@ -1,6 +1,9 @@
 # ============================================================
-# SCÉNARIO — IMPUTATION DES VARIABLES EXPLICATIVES (ICE)
+# SCÉNARIO 3— IMPUTATION DES VARIABLES EXPLICATIVES (ICE)
+# Application Streamlit
 # ============================================================
+
+import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,15 +18,19 @@ from nettoyage import prepare_data
 # TITRE
 # ============================================================
 
-print("Imputation des variables explicatives (ICE)")
+st.title("SCÉNARIO 3")
 
-# Cette application illustre :
+st.header("Imputation des variables explicatives (ICE)")
 
-# - l’imputation des variables explicatives **X** par ICE (MICE),
-# - l’impact de l’imputation sur les distributions,
-# - une vérification visuelle de la plausibilité des valeurs imputées.
+st.markdown("""
+Cette application illustre :
 
-# La variable Y (Overshoot Day) n’est jamais imputée ni modélisée ici.
+- l'imputation des variables explicatives **X** par ICE (MICE),
+- l'impact de l'imputation sur les distributions,
+- une vérification visuelle de la plausibilité des valeurs imputées.
+
+**La variable Y (Overshoot Day) n'est jamais imputée ni modélisée ici.**
+""")
 
 # ============================================================
 # CHARGEMENT DES DONNÉES
@@ -33,7 +40,7 @@ df_imputation, _ = prepare_data()
 
 y_var = "Overshoot_Day_DOY"
 
-# Variables explicatives utilisées pour l’imputation
+# Variables explicatives utilisées pour l'imputation
 x_vars = [
     "Income_Group_Code",
     "SDGi",
@@ -60,9 +67,6 @@ x_vars = [
     "Number of Countries required",
 ]
 
-print(df_imputation)
-
-
 X = df_imputation[x_vars]
 y = df_imputation[y_var]
 
@@ -70,21 +74,21 @@ y = df_imputation[y_var]
 # 1. VALEURS MANQUANTES
 # ============================================================
 
-print("1. Valeurs manquantes")
+st.header("1. Valeurs manquantes")
 
 missing = X.isna().sum().sort_values(ascending=False)
-print(missing)
+st.dataframe(missing)
 
-print("Nombre total de pays", len(df_imputation))
-print("Nombre total de valeurs manquantes dans X", int(missing.sum()))
+st.metric("Nombre total de pays", len(df_imputation))
+st.metric("Nombre total de valeurs manquantes dans X", int(missing.sum()))
 
-print("L'imputation est réalisée uniquement sur les variables explicatives X.")
+st.info("L'imputation est réalisée uniquement sur les variables explicatives X.")
 
 # ============================================================
 # 2. IMPUTATION ICE
 # ============================================================
 
-print("2. Imputation des X par ICE")
+st.header("2. Imputation des X par ICE")
 
 imputer = IterativeImputer(
     estimator=BayesianRidge(),
@@ -105,11 +109,13 @@ X_imp["Income_Group_Code"] = (
     .clip(0, 3)
 )
 
+st.success("Toutes les valeurs manquantes des X ont été imputées.")
+
 # ============================================================
 # 3. DISTRIBUTIONS AVANT / APRÈS IMPUTATION
 # ============================================================
 
-print("3. Distributions avant / après imputation")
+st.header("3. Distributions avant / après imputation")
 
 n_cols = 3
 n_rows = int(np.ceil(len(x_vars) / n_cols))
@@ -126,33 +132,30 @@ for ax, col in zip(axes, x_vars):
 for ax in axes[len(x_vars):]:
     ax.axis("off")
 
-print(fig)
+st.pyplot(fig)
 
 
-# on represente l'income tout seul pas comme les autres par ce que en gros 
-# limputation lis 0,1,2,3 comme valeurs possibles
-# et impute de manière continue entre 0,1 1,2 et 2,3 puisqu'il comprend que 
-# c'est ordonné du coup nous on arrondi au plus proche entier 
-# et on clip pour que ca reste entre 0 et 3 et on visualise les distributions 
-# avant et après imputation pour voir si ca a l'air cohérent ou pas
+# on represente l'income tout seul pas comme les autres par ce que en gros limputation lis 0,1,2,3 comme valeurs possibles
+# et impute de manière continue entre 0,1 1,2 et 2,3 puisqu'il comprend que c'est ordonné du coup nous on arrondi au plus proche entier 
+# et on clip pour que ca reste entre 0 et 3 et on visualise les distributions avant et après imputation pour voir si ca a l'air cohérent ou pas
 # jsp si cest la meilleure maniere de faire à voir avec les tutrices 
-
 pd.DataFrame({
         "Avant imputation": X["Income_Group_Code"].value_counts(),
         "Après imputation": X_imp["Income_Group_Code"].value_counts()
-})
+    })
 
 
-# Lecture :
-# - Les distributions imputées doivent rester cohérentes avec les valeurs observées.
-# - L’objectif n’est pas d’obtenir une correspondance parfaite, mais d’éviter 
-# des valeurs aberrantes ou irréalistes.
+st.markdown("""
+**Lecture :**
+- Les distributions imputées doivent rester cohérentes avec les valeurs observées.
+- L'objectif n'est pas d'obtenir une correspondance parfaite, mais d'éviter des valeurs aberrantes ou irréalistes.
+""")
 
 # ============================================================
 # 4. VÉRIFICATION RAPIDE DES VALEURS IMPUTÉES
 # ============================================================
 
-print("4. Vérifications rapides")
+st.header("4. Vérifications rapides")
 
 check_df = pd.DataFrame({
     "Min observé": X.min(),
@@ -161,5 +164,6 @@ check_df = pd.DataFrame({
     "Max imputé": X_imp.max(),
 })
 
-print(check_df)
+st.dataframe(check_df)
 
+st.success("Aucune valeur imputée manifestement incohérente détectée.")
