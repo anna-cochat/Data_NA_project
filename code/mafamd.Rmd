@@ -1,0 +1,132 @@
+---
+title: "Caca"
+author: "Aline Vissuzaine"
+date: "2026-03-10"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = "~/ProjetTutore")
+```
+
+```{r}
+library(readxl)
+library(FactoMineR)
+library(factoextra)
+library(ggplot2)
+library(plotly)
+```
+
+
+
+
+```{r}
+library(readr)
+df <- read_csv("data_for_famd.csv")
+
+df_original <- df
+
+View(df)
+```
+
+
+```{r}
+
+# keep country names
+country_col <- df$Country
+
+# remove Country and Overshoot for the FAMD analysis
+data2 <- df %>%
+  select(-Country, -Overshoot_Day_DOY)
+
+# remove rows with missing values
+data_afdm <- na.omit(data2)
+
+# keep only matching countries
+country_col <- country_col[as.numeric(rownames(data_afdm))]
+
+# select variables used in the FAMD
+data_afdm <- data_afdm %>%
+  select(
+    SDGi,
+    `Life Expectancy`,
+    HDI,
+    `Per Capita GDP`,
+    `Population (millions)`,
+    Cropland_Footprint_Production,
+    BuiltUp_Footprint_Production,
+    Cropland_Footprint_Consumption,
+    Forest_Footprint_Consumption,
+    Fish_Footprint_Consumption,
+    Cropland,
+    `Grazing land`,
+    `Ecological (Deficit) or Reserve`,
+    `Number of Earths required`,
+    `Income Group`,
+    Region
+  )
+
+# convert categorical variables to factors
+data_afdm$`Income Group` <- as.factor(data_afdm$`Income Group`)
+data_afdm$Region <- as.factor(data_afdm$Region)
+
+```
+
+
+```{r}
+
+resul <- FAMD(data_afdm, graph = FALSE)
+
+# scree plot
+fviz_screeplot(resul, addlabels = TRUE)
+
+# variable factor map
+fviz_famd_var(resul, repel = TRUE)
+
+```
+
+```{r}
+
+ind_coord <- as.data.frame(resul$ind$coord)
+ind_coord$Country <- country_col
+
+```
+
+```{r}
+
+pays_sans_overshoot <- df_original$Country[
+  is.na(df_original$Overshoot_Day_DOY)
+]
+
+groupes <- ifelse(ind_coord$Country %in% pays_sans_overshoot,
+                  "Missing Overshoot",
+                  "Observed Overshoot")
+
+```
+
+```{r}
+
+p <- ggplot(ind_coord,
+            aes(x = Dim.1,
+                y = Dim.2,
+                text = Country,
+                colour = groupes)) +
+
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+
+  geom_point(size = 2) +
+  theme_minimal() +
+
+  labs(
+    title = "Countries projection (FAMD)",
+    x = paste0("Dim 1 (", round(resul$eig[1,2],1), "%)"),
+    y = paste0("Dim 2 (", round(resul$eig[2,2],1), "%)")
+  )
+
+ggplotly(p, tooltip = "text")
+
+```
+
+
+
+
