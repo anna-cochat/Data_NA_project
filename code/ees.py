@@ -301,3 +301,4 @@ mae_clean = mean_absolute_error(y_test, pred)
 print("\n RF TEST PERFORMANCE (pas de var dérivées)")
 print("RMSE:", round(rmse_clean,2))
 print("MAE:", round(mae_clean,2))
+
