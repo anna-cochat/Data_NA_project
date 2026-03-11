@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-
 def load_mydf():
     df = pd.read_excel("/Users/admin/Documents/GitHub/Data_NA_project/NA.xlsx")
 
