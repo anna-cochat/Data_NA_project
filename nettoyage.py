@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np
 
+
 def load_mydf():
-    df = pd.read_excel("/Users/admin/Documents/GitHub/Data_NA_project/NA.xlsx")
+    df = pd.read_excel("/Users/admin/Documents/GitHub/data_na_project/NA.xlsx")
 
     rename_dict = {
         "actual \nCountry Overshoot Day \n2018": "Overshoot Day",
@@ -56,9 +57,11 @@ def prepare_data():
     df["Overshoot Day"], errors="coerce"
     ).dt.dayofyear
 
-    df = df.drop(columns=["Country", "Overshoot Day"])
+    df = df.set_index("Country")
 
-# INCOME
+    df = df.drop(columns=["Overshoot Day"])
+
+# INCOME 
     df["Income Group"] = pd.Categorical(
     df["Income Group"],
     categories=["LI", "LM", "UM", "HI"],
@@ -91,6 +94,7 @@ def prepare_data():
 )
     df_model = df_model.drop(columns=["Income_Group_Code"])
     return df_imputation, df_model
+
 
 # ca cest juste des verifications pour voir si tout marchait bien tu peux supp
 
@@ -136,3 +140,7 @@ if __name__ == "__main__":
 
     print(df_imputation.head())
     print(df_model.head())
+
+df_imputation, df_model = prepare_data()
+
+df_imputation.to_csv("data_for_famd.csv")
