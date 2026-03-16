@@ -3,28 +3,25 @@ import numpy as np
 
 
 def load_mydf():
+
     df = pd.read_excel("data/toutlespays.xlsx")
 
     rename_dict = {
         "actual \nCountry Overshoot Day \n2018": "Overshoot Day",
-
         "Cropland Footprint": "Cropland_Footprint_Production",
         "Grazing Footprint": "Grazing_Footprint_Production",
         "Forest Product Footprint": "Forest_Footprint_Production",
         "Fish Footprint": "Fish_Footprint_Production",
         "Built up land": "BuiltUp_Footprint_Production",
         "Carbon Footprint": "Carbon_Footprint_Production",
-
         "Cropland Footprint.1": "Cropland_Footprint_Consumption",
         "Grazing Footprint.1": "Grazing_Footprint_Consumption",
         "Forest Product Footprint.1": "Forest_Footprint_Consumption",
         "Fish Footprint.1": "Fish_Footprint_Consumption",
         "Built up land.1": "BuiltUp_Footprint_Consumption",
         "Carbon Footprint.1": "Carbon_Footprint_Consumption",
-
         "Built up land.2": "BuiltUp_Biocapacity",
         "Total biocapacity ": "Total_Biocapacity",
-
         "Total Ecological Footprint (Production)": "Total_Footprint_Production",
         "Total Ecological Footprint (Consumption)": "Total_Footprint_Consumption",
     }
@@ -50,97 +47,203 @@ def load_mydf():
 
 df = load_mydf()
 
+
 def prepare_data():
+
     df = load_mydf()
-# DOY
+
+    # DOY
     df["Overshoot_Day_DOY"] = pd.to_datetime(
-    df["Overshoot Day"], errors="coerce"
+        df["Overshoot Day"],
+        errors="coerce"
     ).dt.dayofyear
 
     df = df.set_index("Country")
 
     df = df.drop(columns=["Overshoot Day"])
 
-# INCOME 
+    # INCOME
     df["Income Group"] = pd.Categorical(
-    df["Income Group"],
-    categories=["LI", "LM", "UM", "HI"],
-    ordered=True
+        df["Income Group"],
+        categories=["LI", "LM", "UM", "HI"],
+        ordered=True
     )
 
     df["Income_Group_Code"] = (
-    df["Income Group"]
-    .cat.codes
-    .replace(-1, np.nan)
+        df["Income Group"]
+        .cat.codes
+        .replace(-1, np.nan)
     )
 
-# Quality Score: ORDINALE
+    # Quality Score: ORDINALE
     df["Quality Score"] = pd.Categorical(
-    df["Quality Score"],
-    categories=["2A", "2B", "2C", "3A"],
-    ordered=True
+        df["Quality Score"],
+        categories=["2A", "2B", "2C", "3A"],
+        ordered=True
     )
 
-# Region: NOMINAL
+    df["Quality_Score_Code"] = (
+        df["Quality Score"]
+        .cat.codes
+        .replace(-1, np.nan)
+    )
+
+    # Region: NOMINAL
     df["Region"] = df["Region"].astype("category")
 
+
+
+    df_famd_complete = df.copy()
+    df_famd_complete = df_famd_complete.reset_index()
+    
+
+
+    df_famd_model = df.drop(columns=[
+        "Ecological (Deficit) or Reserve",
+        "Number of Earths required",
+        "Number of Countries required"
+    ]).copy()
+
+    df_famd_model = df_famd_model.reset_index()
+    
     df_imputation = df.copy()
-
+    
+    
     df_model = pd.get_dummies(
-    df,
-    columns=["Income Group", "Quality Score", "Region"],
-    drop_first=True,
-    dtype="int64"
-)
-    df_model = df_model.drop(columns=["Income_Group_Code"])
-    return df_imputation, df_model
+        df,
+        columns=["Income Group", "Quality Score", "Region"],
+        drop_first=True,
+        dtype="int64"
+    )
+
+    df_model = df_model.drop(columns=[
+        "Income_Group_Code",
+        "Quality_Score_Code",
+        "Ecological (Deficit) or Reserve",
+        "Number of Earths required",
+        "Number of Countries required"
+    ])
+
+    return df_imputation, df_model, df_famd_complete, df_famd_model
 
 
-# ca cest juste des verifications pour voir si tout marchait bien tu peux supp
+def describe_df(df, name):
 
-#print(" NA pour Income :")
-#print(df_imputation["Income_Group_Code"].isna().sum())
+    cols = df.columns
+    real_cols = list(cols)
 
-#print("Income valeurs (et NA):")
-#print(df_imputation["Income_Group_Code"].value_counts(dropna=False).sort_index())
+# remove Country if present
+    if "Country" in real_cols:
+        real_cols.remove("Country")
 
-#print(df_imputation[["Quality Score", "Region"]].dtypes)
+# remove dummies
+    real_cols = [
+    c for c in real_cols
+    if not (
+        c.startswith("Income Group_")
+        or c.startswith("Quality Score_")
+        or c.startswith("Region_")
+    )
+    ]
 
-#print("NA par colonne:")
-#print(df_imputation.isna().sum().sort_values(ascending=False).head(10))
+# remove codes if categorical exists
+    if "Income Group" in real_cols and "Income_Group_Code" in real_cols:
+        real_cols.remove("Income_Group_Code")
 
-#print("Income dummies:")
-#print([c for c in df_model.columns if c.startswith("Income Group_")])
+    if "Quality Score" in real_cols and "Quality_Score_Code" in real_cols:
+        real_cols.remove("Quality_Score_Code")
 
-#print("Income_Group_Code dans df_model?")
-#print("Income_Group_Code" in df_model.columns)
+    n_real_vars = len(real_cols)
+    has_dummies = any(
+        c.startswith("Income Group_")
+        or c.startswith("Quality Score_")
+        or c.startswith("Region_")
+        for c in cols
+    )
 
-#print("Nb de na dans df_model:")
-#print(df_model.isna().sum().sort_values(ascending=False).head(10))
+    has_codes = (
+        "Income_Group_Code" in cols
+        or "Quality_Score_Code" in cols
+    )
 
-#print("Lignes imputation:", df_imputation.shape[0])
-#print("Lignes modèles:", df_model.shape[0])
+    has_derived = any(
+        c in cols for c in [
+            "Ecological (Deficit) or Reserve",
+            "Number of Earths required",
+            "Number of Countries required"
+        ]
+    )
 
-#income_missing_idx = df["Income Group"].isna()
-#print("Nombre de lignes avec Income Group manquant:", income_missing_idx.sum())
+    has_categorical = any(
+        c in cols for c in [
+            "Income Group",
+            "Quality Score",
+            "Region"
+        ]
+    )
 
-# Vérifier si d'autres variables sont aussi manquantes quand Income Group est manquant
-
-#other_missing = df.loc[income_missing_idx].drop(
-    columns=["Income Group", "Income_Group_Code"],
-    errors="ignore"
-#).isna().any(axis=1)
-
-#print("Quand Income Group est manquant, d'autres variables sont-elles aussi manquantes ?")
-#print(other_missing.value_counts())
+    has_country_index = df.index.name == "Country"
 
 
+    if "Overshoot_Day_DOY" in cols:
+
+        y = df["Overshoot_Day_DOY"]
+        X = df.drop(columns=["Overshoot_Day_DOY"])
+
+        mask_X_complete = X.notna().all(axis=1)
+        mask_Y_missing = y.isna()
+        mask_Y_present = y.notna()
+        mask_X_missing = X.isna().any(axis=1)
+
+        n_Xcomplete_Ypresent = (mask_X_complete & mask_Y_present).sum()
+        n_Xcomplete_Ymissing = (mask_X_complete & mask_Y_missing).sum()
+        n_Xmissing_Ypresent = (mask_X_missing & mask_Y_present).sum()
+        n_Xmissing_Ymissing = (mask_X_missing & mask_Y_missing).sum()
+
+    else:
+
+        n_Xcomplete_Ypresent = np.nan
+        n_Xcomplete_Ymissing = np.nan
+        n_Xmissing_Ypresent = np.nan
+        n_Xmissing_Ymissing = np.nan
+
+    return {
+        "DF": name,
+        "Pays": df.shape[0],
+        "Variables": df.shape[1],
+        "Variables_réelles": n_real_vars,
+        "Dummies": has_dummies,
+        "Numérique": has_codes,
+        "Dérivées": has_derived,
+        "Catégorielle": has_categorical,
+        "Index pays": has_country_index,
+        "X&Y presents": n_Xcomplete_Ypresent,
+        "X complet & Y manquant": n_Xcomplete_Ymissing,
+        "X manquant & Y complet": n_Xmissing_Ypresent,
+        "X manquant & Y manquant": n_Xmissing_Ymissing
+    }
+    
 if __name__ == "__main__":
-    df_imputation, df_model = prepare_data()
 
-    print(df_imputation.head())
-    print(df_model.head())
+    df_imputation, df_model, df_famd_complete, df_famd_model = prepare_data()
 
-df_imputation, df_model = prepare_data()
 
-df_imputation.to_csv("data_for_famd.csv")
+    tables = []
+
+    tables.append(describe_df(df_imputation, "imputation"))
+    tables.append(describe_df(df_model, "model"))
+    tables.append(describe_df(df_famd_complete, "famd_complete"))
+    tables.append(describe_df(df_famd_model, "famd_model"))
+
+    compare_df = pd.DataFrame(tables)
+
+    pd.set_option("display.max_columns", None)
+    pd.set_option("display.width", None)
+
+    print("\nComparaison des df \n")
+    print(compare_df.to_string())
+
+    df_imputation, df_model, df_famd_complete, df_famd_model = prepare_data()
+    df_imputation.to_csv("df_imputation.csv")
+    df_famd_complete.to_csv("df_famd_complete.csv", index=False)
+    df_famd_model.to_csv("df_famd_model.csv", index=False)
