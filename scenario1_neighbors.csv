@@ -1,0 +1,441 @@
+,Country,Rang_voisin,Voisin,Distance,Voisin_manquant,p
+0,Albania,1,Republic of North Macedonia,0.6796246561380711,False,0.0
+1,Albania,2,Dominican Republic,0.7750982877834554,False,0.0
+2,Albania,3,Cuba,1.07702698548234,False,0.0
+3,Albania,4,Mexico,1.2478804069386207,False,0.0
+4,Albania,5,Costa Rica,1.2677430708336215,False,0.0
+5,Albania,6,"Iran, Islamic Republic of",1.4376664806979509,False,0.0
+6,Albania,7,Jamaica,1.449836215990095,False,0.0
+7,Albania,8,Azerbaijan,1.451149779204988,False,0.0
+8,Albania,9,Thailand,1.5318583898808429,False,0.0
+9,Albania,10,Tunisia,1.5482286043793148,False,0.0
+10,Algeria,1,Georgia,0.45213687109580625,False,0.1
+11,Algeria,2,Tunisia,0.5408800938651208,False,0.1
+12,Algeria,3,Jordan,0.682174239704216,False,0.1
+13,Algeria,4,Sri Lanka,0.7772689970308364,True,0.1
+14,Algeria,5,Armenia,0.7784296454727638,False,0.1
+15,Algeria,6,El Salvador,0.8076012866908568,False,0.1
+16,Algeria,7,Azerbaijan,0.8361176380889231,False,0.1
+17,Algeria,8,Lebanon,0.877989212667458,False,0.1
+18,Algeria,9,Morocco,0.9547959718227317,False,0.1
+19,Algeria,10,Mexico,1.129206516739503,False,0.1
+20,Armenia,1,Georgia,0.5602871089055138,False,0.1
+21,Armenia,2,Algeria,0.7784296454727638,False,0.1
+22,Armenia,3,Jordan,0.9348324513606402,False,0.1
+23,Armenia,4,Uzbekistan,0.9498575796346106,False,0.1
+24,Armenia,5,Lebanon,0.9554978589614042,False,0.1
+25,Armenia,6,Sri Lanka,1.1452681356270094,True,0.1
+26,Armenia,7,Tunisia,1.1496725410871633,False,0.1
+27,Armenia,8,Azerbaijan,1.202212767405218,False,0.1
+28,Armenia,9,El Salvador,1.293187618527492,False,0.1
+29,Armenia,10,Morocco,1.3156103130254229,False,0.1
+30,Azerbaijan,1,Algeria,0.8361176380889231,False,0.1
+31,Azerbaijan,2,Lebanon,0.854087536086726,False,0.1
+32,Azerbaijan,3,Jordan,0.8873176278082068,False,0.1
+33,Azerbaijan,4,Sri Lanka,0.910079541609858,True,0.1
+34,Azerbaijan,5,Mexico,0.9180615998916832,False,0.1
+35,Azerbaijan,6,"Iran, Islamic Republic of",1.0151213235753929,False,0.1
+36,Azerbaijan,7,Georgia,1.0567320678052097,False,0.1
+37,Azerbaijan,8,Uzbekistan,1.116319279732271,False,0.1
+38,Azerbaijan,9,Indonesia,1.1257570573329931,False,0.1
+39,Azerbaijan,10,Morocco,1.1497199569701175,False,0.1
+40,Benin,1,Ethiopia,0.531633422041039,True,1.0
+41,Benin,2,Malawi,0.6130561651971765,True,1.0
+42,Benin,3,"Tanzania, United Republic of",0.62132091522772,True,1.0
+43,Benin,4,Burkina Faso,0.7272023056702002,True,1.0
+44,Benin,5,Cameroon,0.7731465017885728,True,1.0
+45,Benin,6,Nigeria,0.8699158457170997,True,1.0
+46,Benin,7,Burundi,0.9356319033438838,True,1.0
+47,Benin,8,Rwanda,0.9481615537948899,True,1.0
+48,Benin,9,Senegal,1.0367360247431132,True,1.0
+49,Benin,10,Kenya,1.1259323920264908,True,1.0
+50,Bolivia,1,Mauritania,2.954889888663577,False,0.2
+51,Bolivia,2,Uruguay,3.5396592465515524,True,0.2
+52,Bolivia,3,Colombia,3.6691160753467895,False,0.2
+53,Bolivia,4,Peru,4.3005415981169755,False,0.2
+54,Bolivia,5,Brazil,4.397050716868508,False,0.2
+55,Bolivia,6,Turkmenistan,4.688017349731052,False,0.2
+56,Bolivia,7,Argentina,4.70224406690475,False,0.2
+57,Bolivia,8,Botswana,4.7785297409745375,False,0.2
+58,Bolivia,9,Sudan,4.975363221553619,True,0.2
+59,Bolivia,10,Paraguay,5.006007427264513,False,0.2
+60,Botswana,1,Nicaragua,1.687093764354092,True,0.2
+61,Botswana,2,Armenia,1.855721046936749,False,0.2
+62,Botswana,3,Georgia,1.9261850399381149,False,0.2
+63,Botswana,4,Iraq,1.957074413637003,False,0.2
+64,Botswana,5,Congo,2.091656309366703,True,0.2
+65,Botswana,6,El Salvador,2.1017169710230688,False,0.2
+66,Botswana,7,Algeria,2.1512081456862777,False,0.2
+67,Botswana,8,Tunisia,2.15860872453881,False,0.2
+68,Botswana,9,Fiji,2.2106393271780016,False,0.2
+69,Botswana,10,Colombia,2.2252530496769456,False,0.2
+70,Chad,1,Central African Republic,1.4975228005739614,True,0.8
+71,Chad,2,Madagascar,1.524944249384614,True,0.8
+72,Chad,3,Guinea,1.7330420142715293,False,0.8
+73,Chad,4,Sudan,1.9296419768619482,True,0.8
+74,Chad,5,Niger,1.956197808524484,True,0.8
+75,Chad,6,Congo,2.0380312950436,True,0.8
+76,Chad,7,Angola,2.116916713056749,True,0.8
+77,Chad,8,Mozambique,2.2159639745957422,True,0.8
+78,Chad,9,Lesotho,2.2361321332706887,True,0.8
+79,Chad,10,Eswatini,2.2571054034024196,False,0.8
+80,Colombia,1,Peru,1.7214007154409778,False,0.1
+81,Colombia,2,Nicaragua,1.89567901164743,True,0.1
+82,Colombia,3,Botswana,2.2252530496769456,False,0.1
+83,Colombia,4,Mexico,2.29951159389536,False,0.1
+84,Colombia,5,Fiji,2.362628354747858,False,0.1
+85,Colombia,6,Morocco,2.5949548679953356,False,0.1
+86,Colombia,7,Georgia,2.623088371262753,False,0.1
+87,Colombia,8,Albania,2.6241458401596485,False,0.1
+88,Colombia,9,El Salvador,2.6364925384748914,False,0.1
+89,Colombia,10,Algeria,2.64953415663143,False,0.1
+90,Costa Rica,1,Thailand,0.5000091789404163,False,0.0
+91,Costa Rica,2,Republic of Moldova,1.0044090936227854,False,0.0
+92,Costa Rica,3,Albania,1.2677430708336215,False,0.0
+93,Costa Rica,4,Mexico,1.2884114071861916,False,0.0
+94,Costa Rica,5,"Iran, Islamic Republic of",1.3035361617355932,False,0.0
+95,Costa Rica,6,Dominican Republic,1.3304904762839684,False,0.0
+96,Costa Rica,7,Malaysia,1.3877124830745124,False,0.0
+97,Costa Rica,8,Azerbaijan,1.419831090205753,False,0.0
+98,Costa Rica,9,Serbia,1.5779018800596682,False,0.0
+99,Costa Rica,10,Republic of North Macedonia,1.5886563512864702,False,0.0
+100,Cuba,1,Jamaica,0.7008067930848226,False,0.0
+101,Cuba,2,Republic of North Macedonia,1.0099934918324385,False,0.0
+102,Cuba,3,Albania,1.07702698548234,False,0.0
+103,Cuba,4,Panama,1.2125241234511954,False,0.0
+104,Cuba,5,Dominican Republic,1.2314947843241202,False,0.0
+105,Cuba,6,Fiji,1.3927686842572506,False,0.0
+106,Cuba,7,Tunisia,1.4306861982438546,False,0.0
+107,Cuba,8,El Salvador,1.5179241455708279,False,0.0
+108,Cuba,9,Montenegro,1.6260985061955313,False,0.0
+109,Cuba,10,Algeria,1.7012003043123929,False,0.0
+110,Dominican Republic,1,Albania,0.7750982877834554,False,0.1
+111,Dominican Republic,2,Tunisia,1.097752792221166,False,0.1
+112,Dominican Republic,3,Sri Lanka,1.103680683513317,True,0.1
+113,Dominican Republic,4,El Salvador,1.1053878438523215,False,0.1
+114,Dominican Republic,5,Algeria,1.1676630988958099,False,0.1
+115,Dominican Republic,6,Jamaica,1.1891113907625885,False,0.1
+116,Dominican Republic,7,Azerbaijan,1.2170376217435075,False,0.1
+117,Dominican Republic,8,Cuba,1.2314947843241202,False,0.1
+118,Dominican Republic,9,Republic of North Macedonia,1.2485499855049609,False,0.1
+119,Dominican Republic,10,Morocco,1.2845360093772087,False,0.1
+120,El Salvador,1,Tunisia,0.4504334438061096,False,0.2
+121,El Salvador,2,Algeria,0.8076012866908571,False,0.2
+122,El Salvador,3,Georgia,0.9439125763249951,False,0.2
+123,El Salvador,4,Nicaragua,0.9502668719965551,True,0.2
+124,El Salvador,5,Sri Lanka,0.9561895382726678,True,0.2
+125,El Salvador,6,Morocco,1.0106074320310132,False,0.2
+126,El Salvador,7,Jamaica,1.057961205949887,False,0.2
+127,El Salvador,8,Fiji,1.0580219585387318,False,0.2
+128,El Salvador,9,Dominican Republic,1.1053878438523215,False,0.2
+129,El Salvador,10,Jordan,1.1564084568957473,False,0.2
+130,Eswatini,1,Guinea,0.7896313211157405,False,0.7
+131,Eswatini,2,Niger,1.0971975276038228,True,0.7
+132,Eswatini,3,"Tanzania, United Republic of",1.2708434039576162,True,0.7
+133,Eswatini,4,Sudan,1.2796250854036966,True,0.7
+134,Eswatini,5,Cameroon,1.435605756005408,True,0.7
+135,Eswatini,6,Senegal,1.480571725556561,True,0.7
+136,Eswatini,7,Madagascar,1.4810339996612336,True,0.7
+137,Eswatini,8,Mali,1.5649132127973804,False,0.7
+138,Eswatini,9,Benin,1.58675948344296,False,0.7
+139,Eswatini,10,Burkina Faso,1.6071006499412546,True,0.7
+140,Fiji,1,Tunisia,0.9025476526941847,False,0.1
+141,Fiji,2,El Salvador,1.0580219585387318,False,0.1
+142,Fiji,3,Jamaica,1.22358838673437,False,0.1
+143,Fiji,4,Algeria,1.287867303331783,False,0.1
+144,Fiji,5,Nicaragua,1.3517904161706715,True,0.1
+145,Fiji,6,Cuba,1.3927686842572506,False,0.1
+146,Fiji,7,Georgia,1.400436883626293,False,0.1
+147,Fiji,8,Dominican Republic,1.459698372463302,False,0.1
+148,Fiji,9,Panama,1.469828922705086,False,0.1
+149,Fiji,10,Mexico,1.4947001143776018,False,0.1
+150,Gabon,1,Namibia,2.711234187773634,False,0.4
+151,Gabon,2,Fiji,3.015064727481562,False,0.4
+152,Gabon,3,Nicaragua,3.248184917919174,True,0.4
+153,Gabon,4,Congo,3.2882796093732467,True,0.4
+154,Gabon,5,Botswana,3.464855393208333,False,0.4
+155,Gabon,6,Tunisia,3.547114262184594,False,0.4
+156,Gabon,7,El Salvador,3.563732517734088,False,0.4
+157,Gabon,8,Liberia,3.578875506533119,True,0.4
+158,Gabon,9,Colombia,3.632235337765518,False,0.4
+159,Gabon,10,Senegal,3.6382558747320783,True,0.4
+160,Georgia,1,Algeria,0.45213687109580675,False,0.1
+161,Georgia,2,Armenia,0.5602871089055138,False,0.1
+162,Georgia,3,Tunisia,0.7356231293683666,False,0.1
+163,Georgia,4,Lebanon,0.8504051457117493,False,0.1
+164,Georgia,5,Jordan,0.9071714955033595,False,0.1
+165,Georgia,6,El Salvador,0.9439125763249951,False,0.1
+166,Georgia,7,Azerbaijan,1.0567320678052097,False,0.1
+167,Georgia,8,Sri Lanka,1.0607620963474311,True,0.1
+168,Georgia,9,Morocco,1.2593747774826831,False,0.1
+169,Georgia,10,Mexico,1.3033377394398193,False,0.1
+170,Ghana,1,Nepal,1.0444452471278007,True,0.6
+171,Ghana,2,Côte d'Ivoire,1.1398457146043093,True,0.6
+172,Ghana,3,Papua New Guinea,1.165839787634414,False,0.6
+173,Ghana,4,Myanmar,1.5340161408017234,False,0.6
+174,Ghana,5,Bangladesh,1.6014525782762525,True,0.6
+175,Ghana,6,Cameroon,1.6152490969720528,True,0.6
+176,Ghana,7,Guatemala,1.7010011717744922,False,0.6
+177,Ghana,8,Tajikistan,1.7380793868425741,True,0.6
+178,Ghana,9,Kyrgyzstan,1.7543758475443294,True,0.6
+179,Ghana,10,Viet Nam,1.7666732920733326,False,0.6
+180,Guatemala,1,Indonesia,0.5004641182848901,False,0.6
+181,Guatemala,2,Morocco,0.7859612681283049,False,0.6
+182,Guatemala,3,Philippines,0.8472959352686716,True,0.6
+183,Guatemala,4,Kyrgyzstan,0.8612208972598256,True,0.6
+184,Guatemala,5,Sri Lanka,1.0372182687601825,True,0.6
+185,Guatemala,6,Tajikistan,1.1828863802196752,True,0.6
+186,Guatemala,7,Viet Nam,1.3180130081141763,False,0.6
+187,Guatemala,8,Uzbekistan,1.414802074358177,False,0.6
+188,Guatemala,9,Bangladesh,1.4235131798650646,True,0.6
+189,Guatemala,10,India,1.4690105853387068,True,0.6
+190,Guinea,1,Niger,0.5522131801205513,True,0.9
+191,Guinea,2,Madagascar,0.7528409370011107,True,0.9
+192,Guinea,3,Eswatini,0.7896313211157405,False,0.9
+193,Guinea,4,"Tanzania, United Republic of",0.8436388786737234,True,0.9
+194,Guinea,5,Sudan,1.0396168974427793,True,0.9
+195,Guinea,6,Nigeria,1.0930398323870592,True,0.9
+196,Guinea,7,Burkina Faso,1.2049669355913037,True,0.9
+197,Guinea,8,Angola,1.2141893786972153,True,0.9
+198,Guinea,9,Cameroon,1.2524165647049772,True,0.9
+199,Guinea,10,Ethiopia,1.3002602504258438,True,0.9
+200,Indonesia,1,Guatemala,0.5004641182848901,False,0.3
+201,Indonesia,2,Morocco,0.6157259163784405,False,0.3
+202,Indonesia,3,Philippines,0.708862342452109,True,0.3
+203,Indonesia,4,Sri Lanka,0.7557532871945649,True,0.3
+204,Indonesia,5,Kyrgyzstan,0.8361784491644181,True,0.3
+205,Indonesia,6,Uzbekistan,1.1249441010939318,False,0.3
+206,Indonesia,7,Azerbaijan,1.1257570573329931,False,0.3
+207,Indonesia,8,Viet Nam,1.2706666259381212,False,0.3
+208,Indonesia,9,Jordan,1.3096177293612241,False,0.3
+209,Indonesia,10,Algeria,1.3475458460597545,False,0.3
+210,Iraq,1,Armenia,1.3462237253301348,False,0.3
+211,Iraq,2,Georgia,1.3751270547617511,False,0.3
+212,Iraq,3,El Salvador,1.4218375300615278,False,0.3
+213,Iraq,4,Tunisia,1.47567396229595,False,0.3
+214,Iraq,5,Algeria,1.6121534719101802,False,0.3
+215,Iraq,6,Jordan,1.7031575814908724,False,0.3
+216,Iraq,7,Jamaica,1.8021068130026858,False,0.3
+217,Iraq,8,Pakistan,1.8530402720880363,True,0.3
+218,Iraq,9,Yemen,1.8974122026347058,True,0.3
+219,Iraq,10,Sri Lanka,1.9034198961800357,True,0.3
+220,Jamaica,1,Cuba,0.7008067930848226,False,0.0
+221,Jamaica,2,El Salvador,1.057961205949887,False,0.0
+222,Jamaica,3,Tunisia,1.0630631524863263,False,0.0
+223,Jamaica,4,Dominican Republic,1.1891113907625885,False,0.0
+224,Jamaica,5,Fiji,1.22358838673437,False,0.0
+225,Jamaica,6,Albania,1.449836215990095,False,0.0
+226,Jamaica,7,Algeria,1.4716424630517546,False,0.0
+227,Jamaica,8,Georgia,1.513025486486698,False,0.0
+228,Jamaica,9,Republic of North Macedonia,1.5168226105108666,False,0.0
+229,Jamaica,10,Panama,1.6090356721328611,False,0.0
+230,Jordan,1,Algeria,0.682174239704216,False,0.2
+231,Jordan,2,Sri Lanka,0.7218780994335136,True,0.2
+232,Jordan,3,Azerbaijan,0.8873176278082068,False,0.2
+233,Jordan,4,Lebanon,0.9069210541326997,False,0.2
+234,Jordan,5,Georgia,0.9071714955033595,False,0.2
+235,Jordan,6,Armenia,0.9348324513606402,False,0.2
+236,Jordan,7,Tunisia,1.006467619413264,False,0.2
+237,Jordan,8,Morocco,1.0468088455571056,False,0.2
+238,Jordan,9,Uzbekistan,1.050332828510514,False,0.2
+239,Jordan,10,Philippines,1.0879948996813626,True,0.2
+240,Lao People's Democratic Republic,1,Myanmar,1.0698643655089362,False,0.3
+241,Lao People's Democratic Republic,2,Côte d'Ivoire,2.0744863905918813,True,0.3
+242,Lao People's Democratic Republic,3,Ghana,2.2860990730036623,False,0.3
+243,Lao People's Democratic Republic,4,Viet Nam,2.413016635557571,False,0.3
+244,Lao People's Democratic Republic,5,Nepal,2.4784853187720985,True,0.3
+245,Lao People's Democratic Republic,6,Papua New Guinea,2.7214092953761635,False,0.3
+246,Lao People's Democratic Republic,7,China,3.0439668338551717,False,0.3
+247,Lao People's Democratic Republic,8,Republic of Moldova,3.2804995070926593,False,0.3
+248,Lao People's Democratic Republic,9,Kyrgyzstan,3.2933541089660032,True,0.3
+249,Lao People's Democratic Republic,10,Mali,3.306931160218645,False,0.3
+250,Lebanon,1,Georgia,0.8504051457117493,False,0.0
+251,Lebanon,2,Azerbaijan,0.854087536086726,False,0.0
+252,Lebanon,3,Algeria,0.877989212667458,False,0.0
+253,Lebanon,4,Jordan,0.9069210541326997,False,0.0
+254,Lebanon,5,Armenia,0.9554978589614042,False,0.0
+255,Lebanon,6,"Iran, Islamic Republic of",1.075912700713696,False,0.0
+256,Lebanon,7,Turkey,1.08782184993445,False,0.0
+257,Lebanon,8,Mexico,1.2091830995622126,False,0.0
+258,Lebanon,9,Barbados,1.2693978117245375,False,0.0
+259,Lebanon,10,Tunisia,1.2924579536092065,False,0.0
+260,Mali,1,Burkina Faso,1.3957129261012597,True,0.7
+261,Mali,2,Niger,1.435958510453869,True,0.7
+262,Mali,3,Guinea,1.5082428723070054,False,0.7
+263,Mali,4,Cameroon,1.5477103492571822,True,0.7
+264,Mali,5,Eswatini,1.5649132127973804,False,0.7
+265,Mali,6,"Tanzania, United Republic of",1.578777082949034,True,0.7
+266,Mali,7,Côte d'Ivoire,1.6411986403776502,True,0.7
+267,Mali,8,Nigeria,1.756407287284548,True,0.7
+268,Mali,9,Malawi,1.762883140898029,True,0.7
+269,Mali,10,Ghana,1.8168481621532793,False,0.7
+270,Mauritania,1,Congo,2.6875939569031644,True,0.4
+271,Mauritania,2,Botswana,2.731248231980583,False,0.4
+272,Mauritania,3,Sudan,2.8491436321540533,True,0.4
+273,Mauritania,4,Bolivia,2.954889888663577,False,0.4
+274,Mauritania,5,Colombia,3.069826340692675,False,0.4
+275,Mauritania,6,Chad,3.0864045403565945,False,0.4
+276,Mauritania,7,Eswatini,3.3165005420451448,False,0.4
+277,Mauritania,8,Lesotho,3.4108990017083274,True,0.4
+278,Mauritania,9,Guinea,3.4220428743498155,False,0.4
+279,Mauritania,10,Niger,3.5798439248105844,True,0.4
+280,Mexico,1,Turkey,0.8928762814420252,False,0.0
+281,Mexico,2,Azerbaijan,0.9180615998916832,False,0.0
+282,Mexico,3,"Iran, Islamic Republic of",0.9393347287580558,False,0.0
+283,Mexico,4,Republic of North Macedonia,1.089605173140691,False,0.0
+284,Mexico,5,Algeria,1.129206516739503,False,0.0
+285,Mexico,6,Lebanon,1.2091830995622126,False,0.0
+286,Mexico,7,Albania,1.2478804069386207,False,0.0
+287,Mexico,8,Bosnia and Herzegovina,1.2594822693256575,False,0.0
+288,Mexico,9,Costa Rica,1.2884114071861916,False,0.0
+289,Mexico,10,Georgia,1.3033377394398193,False,0.0
+290,Mongolia,1,Uruguay,9.824398217247664,True,0.1
+291,Mongolia,2,Bolivia,10.462238005378158,False,0.1
+292,Mongolia,3,Australia,10.492055737507158,False,0.1
+293,Mongolia,4,Mauritania,11.45544061393419,False,0.1
+294,Mongolia,5,Turkmenistan,12.734230452091653,False,0.1
+295,Mongolia,6,Paraguay,12.954591586284053,False,0.1
+296,Mongolia,7,Colombia,13.11866910719164,False,0.1
+297,Mongolia,8,Argentina,13.413907587837121,False,0.1
+298,Mongolia,9,Botswana,13.536085050737162,False,0.1
+299,Mongolia,10,Kazakhstan,13.657527914007058,False,0.1
+300,Montenegro,1,Panama,1.0684966333727568,False,0.0
+301,Montenegro,2,Republic of North Macedonia,1.3844332924475085,False,0.0
+302,Montenegro,3,Bosnia and Herzegovina,1.5691011752081754,False,0.0
+303,Montenegro,4,Cuba,1.6260985061955313,False,0.0
+304,Montenegro,5,Fiji,1.6561417914138843,False,0.0
+305,Montenegro,6,Barbados,1.7191532006964205,False,0.0
+306,Montenegro,7,Turkey,1.7385373539087234,False,0.0
+307,Montenegro,8,Mexico,1.7821331950427048,False,0.0
+308,Montenegro,9,Jamaica,1.9693000764706226,False,0.0
+309,Montenegro,10,Georgia,1.9885459349274688,False,0.0
+310,Morocco,1,Sri Lanka,0.4108097368471437,True,0.4
+311,Morocco,2,Philippines,0.47379453536568095,True,0.4
+312,Morocco,3,Indonesia,0.6157259163784405,False,0.4
+313,Morocco,4,Guatemala,0.7859612681283049,False,0.4
+314,Morocco,5,Algeria,0.9547959718227317,False,0.4
+315,Morocco,6,Nicaragua,0.9866981190945991,True,0.4
+316,Morocco,7,El Salvador,1.010607432031013,False,0.4
+317,Morocco,8,Jordan,1.0468088455571056,False,0.4
+318,Morocco,9,Kyrgyzstan,1.0543679264586128,True,0.4
+319,Morocco,10,Uzbekistan,1.1069110927794061,False,0.4
+320,Myanmar,1,Lao People's Democratic Republic,1.0698643655089362,False,0.5
+321,Myanmar,2,Côte d'Ivoire,1.5167914125705908,True,0.5
+322,Myanmar,3,Ghana,1.5340161408017237,False,0.5
+323,Myanmar,4,Nepal,1.6708556412556093,True,0.5
+324,Myanmar,5,Papua New Guinea,1.871037294079474,False,0.5
+325,Myanmar,6,Viet Nam,1.9919591746544156,False,0.5
+326,Myanmar,7,Bangladesh,2.552172921574281,True,0.5
+327,Myanmar,8,Guatemala,2.6518947570654707,False,0.5
+328,Myanmar,9,Kyrgyzstan,2.668216517655545,True,0.5
+329,Myanmar,10,Tajikistan,2.6977757500687485,True,0.5
+330,Namibia,1,Gabon,2.711234187773634,False,0.2
+331,Namibia,2,Fiji,3.574515558464173,False,0.2
+332,Namibia,3,Colombia,3.598050235519261,False,0.2
+333,Namibia,4,Panama,3.657443074859846,False,0.2
+334,Namibia,5,Botswana,3.6861847846659708,False,0.2
+335,Namibia,6,Nicaragua,4.029033794399914,True,0.2
+336,Namibia,7,Montenegro,4.047801589943491,False,0.2
+337,Namibia,8,Congo,4.155947172841178,True,0.2
+338,Namibia,9,El Salvador,4.351188148120616,False,0.2
+339,Namibia,10,Tunisia,4.35605608683365,False,0.2
+340,Panama,1,Montenegro,1.0684966333727568,False,0.0
+341,Panama,2,Cuba,1.2125241234511954,False,0.0
+342,Panama,3,Republic of North Macedonia,1.406147539795666,False,0.0
+343,Panama,4,Fiji,1.469828922705086,False,0.0
+344,Panama,5,Jamaica,1.6090356721328611,False,0.0
+345,Panama,6,Albania,1.7963879014056015,False,0.0
+346,Panama,7,Tunisia,2.0209893144341127,False,0.0
+347,Panama,8,Bosnia and Herzegovina,2.0642666643002374,False,0.0
+348,Panama,9,Mexico,2.1143173293683826,False,0.0
+349,Panama,10,El Salvador,2.1600832891312107,False,0.0
+350,Papua New Guinea,1,Ghana,1.165839787634414,False,0.5
+351,Papua New Guinea,2,Côte d'Ivoire,1.5921147634293784,True,0.5
+352,Papua New Guinea,3,Guatemala,1.7393092274071573,False,0.5
+353,Papua New Guinea,4,Nepal,1.7667179202448506,True,0.5
+354,Papua New Guinea,5,Myanmar,1.871037294079474,False,0.5
+355,Papua New Guinea,6,Cameroon,2.051470069534124,True,0.5
+356,Papua New Guinea,7,Bangladesh,2.0732821174068925,True,0.5
+357,Papua New Guinea,8,Viet Nam,2.1088927676216045,False,0.5
+358,Papua New Guinea,9,Indonesia,2.177906814421576,False,0.5
+359,Papua New Guinea,10,Tajikistan,2.179361865539003,True,0.5
+360,Peru,1,Colombia,1.7214007154409778,False,0.1
+361,Peru,2,Republic of Moldova,1.8919628923995808,False,0.1
+362,Peru,3,Costa Rica,1.9202975828168776,False,0.1
+363,Peru,4,Thailand,1.9715255525516844,False,0.1
+364,Peru,5,Mexico,2.096862130715457,False,0.1
+365,Peru,6,Malaysia,2.311918345348544,False,0.1
+366,Peru,7,Albania,2.3228426468967167,False,0.1
+367,Peru,8,Nicaragua,2.3429715118714523,True,0.1
+368,Peru,9,Indonesia,2.3710593276970746,False,0.1
+369,Peru,10,Belarus,2.3893177994221957,False,0.1
+370,Republic of Moldova,1,Thailand,0.7150668763484845,False,0.0
+371,Republic of Moldova,2,Costa Rica,1.0044090936227854,False,0.0
+372,Republic of Moldova,3,Indonesia,1.382578559766118,False,0.0
+373,Republic of Moldova,4,Viet Nam,1.4061344223855492,False,0.0
+374,Republic of Moldova,5,Guatemala,1.5349418914807638,False,0.0
+375,Republic of Moldova,6,Dominican Republic,1.7155113061818152,False,0.0
+376,Republic of Moldova,7,Azerbaijan,1.7244507171218129,False,0.0
+377,Republic of Moldova,8,Serbia,1.7553359449834545,False,0.0
+378,Republic of Moldova,9,Albania,1.830501509442842,False,0.0
+379,Republic of Moldova,10,Morocco,1.833179061086492,False,0.0
+380,Republic of North Macedonia,1,Albania,0.6796246561380711,False,0.0
+381,Republic of North Macedonia,2,Cuba,1.0099934918324385,False,0.0
+382,Republic of North Macedonia,3,Mexico,1.0896051731406913,False,0.0
+383,Republic of North Macedonia,4,Bosnia and Herzegovina,1.1561028883474265,False,0.0
+384,Republic of North Macedonia,5,Turkey,1.247656935011932,False,0.0
+385,Republic of North Macedonia,6,Dominican Republic,1.2485499855049609,False,0.0
+386,Republic of North Macedonia,7,"Iran, Islamic Republic of",1.2696718789073136,False,0.0
+387,Republic of North Macedonia,8,Montenegro,1.3844332924475085,False,0.0
+388,Republic of North Macedonia,9,Panama,1.406147539795666,False,0.0
+389,Republic of North Macedonia,10,Fiji,1.512708662143671,False,0.0
+390,Thailand,1,Costa Rica,0.5000091789404163,False,0.0
+391,Thailand,2,Republic of Moldova,0.7150668763484845,False,0.0
+392,Thailand,3,Azerbaijan,1.3590901971203477,False,0.0
+393,Thailand,4,"Iran, Islamic Republic of",1.4091332024292103,False,0.0
+394,Thailand,5,Mexico,1.4368586120818974,False,0.0
+395,Thailand,6,Malaysia,1.4715568227528644,False,0.0
+396,Thailand,7,Viet Nam,1.4821251412979577,False,0.0
+397,Thailand,8,Indonesia,1.491323432131454,False,0.0
+398,Thailand,9,Serbia,1.498320662094433,False,0.0
+399,Thailand,10,Albania,1.5318583898808429,False,0.0
+400,Tunisia,1,El Salvador,0.4504334438061096,False,0.1
+401,Tunisia,2,Algeria,0.5408800938651204,False,0.1
+402,Tunisia,3,Georgia,0.7356231293683666,False,0.1
+403,Tunisia,4,Fiji,0.9025476526941847,False,0.1
+404,Tunisia,5,Jordan,1.006467619413264,False,0.1
+405,Tunisia,6,Sri Lanka,1.026173036350269,True,0.1
+406,Tunisia,7,Jamaica,1.0630631524863268,False,0.1
+407,Tunisia,8,Dominican Republic,1.097752792221166,False,0.1
+408,Tunisia,9,Morocco,1.1255957050162737,False,0.1
+409,Tunisia,10,Armenia,1.1496725410871633,False,0.1
+410,Turkmenistan,1,Armenia,2.6068962478649644,False,0.0
+411,Turkmenistan,2,Botswana,2.649278188772508,False,0.0
+412,Turkmenistan,3,Uzbekistan,2.67914686629223,False,0.0
+413,Turkmenistan,4,Lebanon,2.8413824720659044,False,0.0
+414,Turkmenistan,5,Georgia,2.9005938556943685,False,0.0
+415,Turkmenistan,6,Mexico,3.0238876655789926,False,0.0
+416,Turkmenistan,7,Azerbaijan,3.0464097846655696,False,0.0
+417,Turkmenistan,8,Turkey,3.0484555247069602,False,0.0
+418,Turkmenistan,9,Algeria,3.100368456334207,False,0.0
+419,Turkmenistan,10,Saudi Arabia,3.1563185953943362,False,0.0
+420,Uzbekistan,1,Kyrgyzstan,0.844019731946017,True,0.3
+421,Uzbekistan,2,Armenia,0.9498575796346106,False,0.3
+422,Uzbekistan,3,Philippines,0.9994291836925558,True,0.3
+423,Uzbekistan,4,Sri Lanka,1.028973978084353,True,0.3
+424,Uzbekistan,5,Jordan,1.050332828510514,False,0.3
+425,Uzbekistan,6,Morocco,1.1069110927794061,False,0.3
+426,Uzbekistan,7,Azerbaijan,1.116319279732271,False,0.3
+427,Uzbekistan,8,Indonesia,1.1249441010939318,False,0.3
+428,Uzbekistan,9,Algeria,1.2029768751386782,False,0.3
+429,Uzbekistan,10,Georgia,1.30673275163588,False,0.3
+430,Viet Nam,1,Indonesia,1.2706666259381212,False,0.2
+431,Viet Nam,2,Kyrgyzstan,1.3119174771999067,True,0.2
+432,Viet Nam,3,Guatemala,1.3180130081141763,False,0.2
+433,Viet Nam,4,Republic of Moldova,1.4061344223855492,False,0.2
+434,Viet Nam,5,Thailand,1.4821251412979577,False,0.2
+435,Viet Nam,6,Nepal,1.7185447803958713,True,0.2
+436,Viet Nam,7,Uzbekistan,1.7570971584206645,False,0.2
+437,Viet Nam,8,Ghana,1.7666732920733326,False,0.2
+438,Viet Nam,9,Azerbaijan,1.785150992211253,False,0.2
+439,Viet Nam,10,China,1.7870440059065704,False,0.2
