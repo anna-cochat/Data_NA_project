@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import math
+import scipy.stats
 from sklearn.metrics.pairwise import euclidean_distances
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -10,7 +11,7 @@ from plotly.subplots import make_subplots
 # 38 pays ont Y manquants
 # Dans notre train et notre test du S1 =, nous ne les voulons pas donc n = 106
 # On prend 70% pour le train donc : 
-# n_train = 75 et n_tesrt = 31
+# n_train = 75 et n_test = 31
 
 # =========================================================
 # HYPERPARAMETRES
@@ -158,15 +159,22 @@ n_gauche_70 = math.ceil(n_bleu_gauche * p)
 # 7. SELECTION DE 70% A GAUCHE (multinomiale) 
 # ================================================================
 
-# on a choisis d'utiliser np.random.choice plutot que np.random.multinomial car avec elle il y a une remise et donc un risque de prendre 2 fois le même pays
+# on a choisis d'utiliser np.random.choice plutot que np.random.multinomial car avec elle il y a une remise et donc un risque de prendre 2 fois le même pays,
+# c'est ce qui s'est passé avec le code suivant, plusieurs pays étaient pris plusieurs fois
+
+# counts = scipy.stats.multinomial.rvs(n=n_gauche_70, p=proba_all.loc[bleu_gauche].values)
+# bleu_gauche_70 = pd.Index(
+#    np.repeat(bleu_gauche, counts)  # répète chaque pays selon son comptage
+#)
+
 bleu_gauche_70 = pd.Index(
     np.random.choice(bleu_gauche, size=n_gauche_70, replace=False, p=proba_all.loc[bleu_gauche].values)
 )
 
 print(f"Total bleu gauche : {n_bleu_gauche} pays")
 print(f"70% sélectionnés gauche (multinomiale) : {len(bleu_gauche_70)} pays")
-# for i, pays in enumerate(bleu_gauche_70, start=1):
-#    print(f"{i:>3}. {pays}")
+for i, pays in enumerate(bleu_gauche_70, start=1):
+    print(f"{i:>3}. {pays}")
 
 # ================================================================
 # 8. SELECTION DE 70% DROITE (uniforme)
@@ -185,7 +193,7 @@ print(f"70% sélectionnés droite (uniforme)     : {len(bleu_droite_70)} pays")
 #    print(f"{i:>3}. {pays}")
 
 # ================================================================
-# 9. SPLIT TRAIN / TEST
+# 9. CREATION DES TRAIN / TEST
 # ================================================================
 
 train = bleu_gauche_70.union(bleu_droite_70)
