@@ -42,7 +42,7 @@ dist = pd.DataFrame(
 )
 
 # =========================================================
-# 4. CALCUL DE p_dict (une seule fois, indépendant des params)
+# 4. CALCUL DE p_dict
 # =========================================================
 
 k = 10
@@ -107,7 +107,7 @@ def backward_stepwise_aic(X, y, verbose=False):
 
         if best_aic < current_aic:
             if verbose:
-                print(f"  Suppression de '{removed_var}' (AIC {current_aic:.2f} → {best_aic:.2f})")
+                print(f"  Suppression de '{removed_var}' (AIC {current_aic:.2f} -> {best_aic:.2f})")
             remaining = best_vars
             current_aic = best_aic
             model = best_model
@@ -121,7 +121,7 @@ def backward_stepwise_aic(X, y, verbose=False):
 # =========================================================
 
 multiplicateurs     = [1, 2, 3, 4, 5]
-pourcentages_droite = [0.30, 0.50, 0.60, 0.70]
+pourcentages_droite = [0.80]
 
 # =========================================================
 # 7. BOUCLE GRID SEARCH
@@ -136,20 +136,17 @@ for mult, pct in itertools.product(multiplicateurs, pourcentages_droite):
     i += 1
     print(f"[{i}/{total}] Multiplicateur={mult}, Pct_droite={pct:.0%} ...", end=" ")
 
-    rng = np.random.default_rng(123)  # graine fixe
+    rng = np.random.default_rng(123)
     coords = coords_base.copy()
     coords["tirage"] = False
 
-    # Tirage Bernoulli gauche
     for c in bleu_gauche:
         p2 = min(1, mult * p_dict[c])
         coords.loc[c, "tirage"] = rng.random() < p2
 
-    # Echantillon droite
     n_droite = int(np.ceil(pct * len(bleu_droite)))
     echantillon_droite = rng.choice(bleu_droite, size=n_droite, replace=False)
 
-    # Train / Test
     selection_gauche = coords.index[
         (coords["cote"] == "gauche") &
         (coords["tirage"]) &
@@ -168,9 +165,8 @@ for mult, pct in itertools.product(multiplicateurs, pourcentages_droite):
     n_train = len(df_train)
     n_test  = len(df_test)
 
-    # Régression
     if n_train < 5:
-        print(f"Train trop petit ({n_train}), ignoré.")
+        print(f"Train trop petit ({n_train}), ignore.")
         resultats.append({
             "Multiplicateur": mult,
             "Pct_droite": pct,
@@ -228,24 +224,26 @@ print("\n=== RESULTATS GRID SEARCH ===\n")
 print(df_resultats.to_string(index=False))
 
 df_resultats.to_csv("tableau_parametre_RMSE.csv", index=False)
-print("\nExporté dans tableau_parametre_RMSE.csv")
+print("\nExporte dans tableau_parametre_RMSE.csv")
 
 # =========================================================
 # 9. MEILLEURE COMBINAISON
 # =========================================================
 
 best = df_resultats.dropna(subset=["RMSE"]).sort_values("RMSE").iloc[0]
-print(f"\n>>> Meilleure combinaison : Multiplicateur={best['Multiplicateur']}, "
-      f"Pct_droite={best['Pct_droite']:.0%}, RMSE={best['RMSE']}")
-
-# =========================================================
-# 10. VISUALISATION FAMD - TRACE DES POINTS
-# =========================================================
-
-# Relance la meilleure combinaison pour récupérer les catégories
-best = df_resultats.dropna(subset=["RMSE"]).sort_values("RMSE").iloc[0]
 mult_best = best["Multiplicateur"]
 pct_best  = best["Pct_droite"]
+
+print(f"\n>>> Meilleure combinaison : Multiplicateur={mult_best}, "
+      f"Pct_droite={pct_best:.0%}, RMSE={best['RMSE']}")
+
+# =========================================================
+# 10. RECONSTRUCTION DU MEILLEUR MODELE
+# =========================================================
+
+print("\n" + "="*60)
+print("RECONSTRUCTION DU MEILLEUR MODELE LINEAIRE")
+print("="*60)
 
 rng = np.random.default_rng(123)
 coords = coords_base.copy()
@@ -264,27 +262,118 @@ selection_gauche = coords.index[
     (coords["Y_observe"])
 ]
 
-pays_train = sorted(set(selection_gauche).union(set(echantillon_droite)))
+pays_train_best = sorted(set(selection_gauche).union(set(echantillon_droite)))
+pays_test_best  = coords.index[
+    (coords["Y_observe"]) &
+    (~coords.index.isin(pays_train_best))
+].tolist()
+
+df_train_best = df_model.loc[pays_train_best].dropna()
+df_test_best  = df_model.loc[pays_test_best].dropna()
+
+y_train_best = df_train_best[y_var]
+X_train_best = df_train_best.drop(columns=[y_var])
+
+best_model, selected_vars_best = backward_stepwise_aic(X_train_best, y_train_best, verbose=True)
+vars_used_best = [v for v in selected_vars_best if v != "const"]
+
+# =========================================================
+# 11. AFFICHAGE COMPLET DU MODELE
+# =========================================================
+
+print("\n" + "="*60)
+print("RESUME COMPLET DU MODELE (statsmodels summary)")
+print("="*60)
+print(best_model.summary())
+
+coef_df = pd.DataFrame({
+    "Coefficient": best_model.params,
+    "Std Error":   best_model.bse,
+    "t-stat":      best_model.tvalues,
+    "p-value":     best_model.pvalues,
+    "IC_inf_95":   best_model.conf_int()[0],
+    "IC_sup_95":   best_model.conf_int()[1],
+}).drop(index="const", errors="ignore")
+
+coef_df["|t-stat|"] = coef_df["t-stat"].abs()
+coef_df = coef_df.sort_values("|t-stat|", ascending=False).drop(columns="|t-stat|")
+coef_df = coef_df.round(4)
+
+print(coef_df.to_string())
+coef_df.to_csv("meilleur_modele_coefficients.csv")
+print("\nCoefficients exportes dans meilleur_modele_coefficients.csv")
+
+df_test_best_reg = df_test_best[
+    df_test_best.columns.intersection(vars_used_best + [y_var])
+].dropna()
+
+y_test_best = df_test_best_reg[y_var]
+X_test_best = sm.add_constant(df_test_best_reg[vars_used_best], has_constant="add")
+y_pred_best = best_model.predict(X_test_best)
+
+rmse_best = np.sqrt(mean_squared_error(y_test_best, y_pred_best))
+mae_best  = np.mean(np.abs(y_test_best - y_pred_best))
+
+print(f"\n>>> Performance test - RMSE : {rmse_best:.2f} | MAE : {mae_best:.2f}")
+print(f">>> R2 train : {best_model.rsquared:.4f} | R2 ajuste : {best_model.rsquared_adj:.4f}")
+print(f">>> N train  : {len(df_train_best)} | N test : {len(df_test_best_reg)}")
+print(f">>> Variables retenues : {len(vars_used_best)}")
+print(f"    {vars_used_best}")
+
+# =========================================================
+# 12. LES DEUX GRAPHIQUES SUR LA MEME PAGE
+# =========================================================
+
+colors_cat = {"Train": "blue", "Test": "green", "Y manquant": "red"}
 
 coords["categorie"] = "Test"
-coords.loc[coords.index.isin(pays_train), "categorie"] = "Train"
+coords.loc[coords.index.isin(pays_train_best), "categorie"] = "Train"
 coords.loc[coords["Y_manquant"], "categorie"] = "Y manquant"
 
-colors = {"Train": "blue", "Test": "green", "Y manquant": "red"}
+fig, axes = plt.subplots(1, 2, figsize=(16, 6))
 
-plt.figure(figsize=(8, 6))
+# --- Graphique gauche : Predit vs Observe ---
+ax1 = axes[0]
+ax1.scatter(y_test_best, y_pred_best,
+            alpha=0.8, color="steelblue", edgecolors="white", linewidths=0.5)
+
+lims = [min(y_test_best.min(), y_pred_best.min()) - 5,
+        max(y_test_best.max(), y_pred_best.max()) + 5]
+ax1.plot(lims, lims, "r--", linewidth=1.5, label="Parfait")
+ax1.set_xlim(lims)
+ax1.set_ylim(lims)
+ax1.set_xlabel("Observe (DOY)")
+ax1.set_ylabel("Predit (DOY)")
+ax1.set_title(f"Predit vs Observe - RMSE={rmse_best:.2f}")
+ax1.legend()
+
+for country in y_test_best.index:
+    ax1.annotate(country,
+                 (y_test_best[country], y_pred_best[country]),
+                 fontsize=6, alpha=0.7,
+                 xytext=(3, 3), textcoords="offset points")
+
+# --- Graphique droite : FAMD ---
+ax2 = axes[1]
 
 for g in ["Train", "Test", "Y manquant"]:
     sub = coords[coords["categorie"] == g]
-    plt.scatter(sub["Dim.1"], sub["Dim.2"],
+    ax2.scatter(sub["Dim.1"], sub["Dim.2"],
                 label=f"{g} (n={len(sub)})",
-                color=colors[g], alpha=0.8)
+                color=colors_cat[g], alpha=0.8)
 
-plt.axhline(0, linestyle="--", color="black")
-plt.axvline(0, linestyle="--", color="black")
-plt.xlabel("Dim1")
-plt.ylabel("Dim2")
-plt.title(f"FAMD — meilleure combinaison (mult={mult_best}, droite={pct_best:.0%}, RMSE={best['RMSE']})")
-plt.legend()
+ax2.axhline(0, linestyle="--", color="black")
+ax2.axvline(0, linestyle="--", color="black")
+ax2.set_xlabel("Dim1")
+ax2.set_ylabel("Dim2")
+ax2.set_title(
+    f"FAMD - meilleure combinaison\n"
+    f"(mult={mult_best}, droite={pct_best:.0%}, RMSE={best['RMSE']})"
+)
+ax2.legend()
+
+plt.suptitle("Diagnostic du meilleur modele lineaire", fontsize=13, fontweight="bold")
 plt.tight_layout()
+plt.savefig("meilleur_modele_diagnostics.png", dpi=150, bbox_inches="tight")
 plt.show()
+print("Graphique sauvegarde dans meilleur_modele_diagnostics.png")
