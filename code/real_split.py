@@ -89,7 +89,7 @@ fig = make_subplots(rows=1, cols=3, subplot_titles=[
     "DROITE"
 ])
 
-# Fonction utilitaire pour créer un scatter avec hover
+# Fonction utilitaire
 def make_scatter(subset, color, name, symbol="circle", size=6):
     return go.Scatter(
         x=coords.loc[subset, "Dim.1"],
@@ -101,16 +101,16 @@ def make_scatter(subset, color, name, symbol="circle", size=6):
         name=name
     )
 
-# ---- Graphique 1 : Base ----
+# Graphique 1 : Base
 fig.add_trace(make_scatter(coords.index[coords["Y_observe"]], "steelblue", "Observés"), row=1, col=1)
 fig.add_trace(make_scatter(coords.index[coords["Y_manquant"]], "tomato",    "Manquants"), row=1, col=1)
 
-# ---- Graphique 2 : Gauche ----
+# Graphique 2 : Gauche
 fig.add_trace(make_scatter(coords.index, "lightgrey", "Tous", size=5), row=1, col=2)
 fig.add_trace(make_scatter(bleu_gauche,  "cornflowerblue", "Observés gauche"), row=1, col=2)
 fig.add_trace(make_scatter(coords.index[coords["Y_manquant"]], "tomato", "Manquants"), row=1, col=2)
 
-# ---- Graphique 3 : Droite ----
+# Graphique 3 : Droite
 fig.add_trace(make_scatter(coords.index, "lightgrey", "Tous", size=5), row=1, col=3)
 fig.add_trace(make_scatter(bleu_droite,  "seagreen", "Observés droite"), row=1, col=3)
 fig.add_trace(make_scatter(coords.index[coords["Y_manquant"]], "tomato", "Manquants"), row=1, col=3)
@@ -203,7 +203,7 @@ fig2 = make_subplots(rows=1, cols=2, subplot_titles=[
     "Train / Test / Manquants"
 ])
 
-# ---- Graphique 1 : Gauche + Droite 70% ----
+# Graphique 1 : Gauche + Droite 70%
 for trace in [
     make_scatter(coords.index,                        "lightgrey",      "Tous",      size=5),
     make_scatter(bleu_gauche_70,                      "cornflowerblue", "Gauche 70%"),
@@ -212,7 +212,7 @@ for trace in [
 ]:
     fig2.add_trace(trace, row=1, col=1)
 
-# ---- Graphique 2 : Train / Test / Manquants ----
+# Graphique 2 : Train / Test / Manquants
 for trace in [
     make_scatter(coords.index,                        "lightgrey",  "Tous",       size=5),
     make_scatter(train,                               "mediumorchid","Train (70%)"),
