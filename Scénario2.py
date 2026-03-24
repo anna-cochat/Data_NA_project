@@ -82,7 +82,7 @@ df_predicted = df_predicted.sort_values("Overshoot_Date")
 plt.figure(figsize=(14, 6))
 
 plt.scatter(
-    df_predicted.index.astype(str),   # ⚠️ on utilise l’index si Country pose problème
+    df_predicted.index.astype(str),   # on utilise l’index si Country pose problème
     df_predicted["Overshoot_Date"]
 )
 

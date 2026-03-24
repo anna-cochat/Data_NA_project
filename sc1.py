@@ -172,7 +172,9 @@ for train_idx, val_idx in kf.split(train_cc):
 ols_mean = np.mean(ols_errors)
 ols_sd = np.std(ols_errors)
 ols_mae = np.mean(mae_errors)
-
+print(ols_mae)
+print(ols_sd)
+print(ols_mean)
 
 # --------------------------------------------------
 # TREE MODELS
@@ -301,3 +303,12 @@ mae_clean = mean_absolute_error(y_test, pred)
 print("\n RF TEST PERFORMANCE (pas de var dérivées)")
 print("RMSE:", round(rmse_clean,2))
 print("MAE:", round(mae_clean,2))
+
+importances = model_clean.feature_importances_
+indices = np.argsort(importances)[::-1]
+feature_names = X_test_clean.columns
+print("Feature importances (Random Forest):")
+print("---------------------------------")
+
+for i in indices:
+    print(f"{feature_names[i]}: {importances[i]:.4f}")

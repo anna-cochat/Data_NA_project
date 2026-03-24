@@ -98,6 +98,7 @@ plt.show()
 mse_rf = mean_squared_error(y_test, y_pred)
 print(f"Random Forest MSE: ", mse_rf)
 # 18.78
+# 4 jours d'erreur 
 
 #mse_step = mean_squared_error(y, y_predstep)
 #print(f"Stepwise Regression MSE: {mse_step:.2f}")
@@ -111,3 +112,4 @@ print("---------------------------------")
 
 for i in indices:
     print(f"{feature_names[i]}: {importances[i]:.4f}")
+
