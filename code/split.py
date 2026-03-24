@@ -1,9 +1,18 @@
 import pandas as pd
 import numpy as np
-
+import math
 from sklearn.metrics.pairwise import euclidean_distances
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+p = 0.7
+k = 10
+SEED = 123
+
+np.random.seed(SEED)
 
 df_model = pd.read_csv("df_model.csv", index_col=0)
+
 coords = pd.read_csv("famd_model_coords.csv")
 coords = coords.set_index("Country")
 
@@ -14,11 +23,16 @@ coords = coords.loc[common].copy()
 
 y_var = "Overshoot_Day_DOY"
 
+
 coords["Y_observe"] = df_model[y_var].notna()
 coords["Y_manquant"] = df_model[y_var].isna()
 
+coords["cote"] = np.where(
+    coords["Dim.1"] < 0,
+    "gauche",
+    "droite"
+)
 
-coords["cote"] = np.where(coords["Dim.1"] < 0, "gauche", "droite")
 
 dim_cols = [c for c in coords.columns if c.startswith("Dim.")]
 
@@ -30,20 +44,66 @@ dist = pd.DataFrame(
     columns=coords.index
 )
 
-# =========================================================
-# 6. CALCUL DE p POUR LES BLEUS A GAUCHE
-# =========================================================
-
-k = 10
 
 bleu_gauche = coords.index[
     (coords["cote"] == "gauche") &
     (coords["Y_observe"])
 ]
 
-p_dict = {}
+bleu_droite = coords.index[
+    (coords["cote"] == "droite") &
+    (coords["Y_observe"])
+]
 
-lignes = []
+print("Complets gauche :", len(bleu_gauche))
+print("Complets droite :", len(bleu_droite))
+print("Manquants :", coords["Y_manquant"].sum())
+print("Total :", len(coords))
+
+
+def make_scatter(index, color, name):
+
+    return go.Scatter(
+        x=coords.loc[index, "Dim.1"],
+        y=coords.loc[index, "Dim.2"],
+        mode="markers",
+        marker=dict(color=color, size=7),
+        text=index,
+        hovertemplate="<b>%{text}</b><br>Dim1=%{x:.2f}<br>Dim2=%{y:.2f}<extra></extra>",
+        name=name
+    )
+
+
+fig = make_subplots(rows=1, cols=1)
+
+fig.add_trace(
+    make_scatter(
+        coords.index[coords["Y_observe"]],
+        "steelblue",
+        "Observés"
+    )
+)
+
+fig.add_trace(
+    make_scatter(
+        coords.index[coords["Y_manquant"]],
+        "red",
+        "Manquants"
+    )
+)
+
+fig.add_vline(x=0, line_dash="dash")
+
+fig.update_layout(
+    title="Espace FAMD",
+    width=600,
+    height=500
+)
+
+fig.show()
+
+
+p_dict = {}
 
 for c in bleu_gauche:
 
@@ -51,88 +111,87 @@ for c in bleu_gauche:
 
     voisins = d.index[1:k+1]
 
-    n_manquant = coords.loc[voisins, "Y_manquant"].sum()
+    n_manquant = coords.loc[
+        voisins,
+        "Y_manquant"
+    ].sum()
 
-    p = n_manquant/ k
-
-    p_dict[c] = p
-
-    for r, v in enumerate(voisins, start=1):
-
-        lignes.append({
-            "Country": c,
-            "Rang_voisin": r,
-            "Voisin": v,
-            "Distance": dist.loc[c, v],
-            "Voisin_manquant": coords.loc[v, "Y_manquant"],
-            "p": p
-        })
-
-table_voisins = pd.DataFrame(lignes)
+    p_dict[c] = n_manquant / k
 
 
-# =========================================================
-# 7. BERNOULLI SUR LES BLEUS A GAUCHE
-# =========================================================
+poids = pd.Series(p_dict)
 
-rng = np.random.default_rng(123)
+poids = poids + 0.01
 
-coords["tirage"] = False
-coords["p"] = np.nan
-
-for c in bleu_gauche:
-
-    p = p_dict[c]
-
-    coords.loc[c, "p"] = p
-
-    coords.loc[c, "tirage"] = rng.random() < p
+proba = poids / poids.sum()
 
 
-# =========================================================
-# 8. BLEUS A DROITE → 10% DANS LE TRAIN
-# =========================================================
+n_gauche = math.ceil(len(bleu_gauche) * p)
 
-bleu_droite = coords.index[
-    (coords["cote"] == "droite") &
-    (coords["Y_observe"])
-]
-
-n_droite = int(np.ceil(0.10 * len(bleu_droite)))
-
-echantillon_droite= rng.choice(
-    bleu_droite,
-    size=n_droite,
-    replace=False
+gauche_tires = pd.Index(
+    np.random.choice(
+        bleu_gauche,
+        size=n_gauche,
+        replace=False,
+        p=proba.loc[bleu_gauche].values
+    )
 )
 
 
-# =========================================================
-# 9. TRAIN FINAL
-# =========================================================
+n_droite = math.ceil(len(bleu_droite) * p)
 
-selection_gauche = coords.index[
-    (coords["cote"] == "gauche") &
-    (coords["tirage"]) &
-    (coords["Y_observe"])
-]
-pays_train = sorted(
-    set(selection_gauche).union(set(echantillon_droite))
+droite_tires = pd.Index(
+    np.random.choice(
+        bleu_droite,
+        size=n_droite,
+        replace=False
+    )
 )
 
-coords["train"] = coords.index.isin(pays_train)
-# =========================================================
-# 9bis. GROUPES POUR PLOT
-# =========================================================
+
+train = gauche_tires.union(droite_tires)
+
+test = coords.index[
+    coords["Y_observe"]
+].difference(train)
+
+
+train_gauche = sum(
+    coords.loc[train, "cote"] == "gauche"
+)
+
+train_droite = sum(
+    coords.loc[train, "cote"] == "droite"
+)
+
+test_gauche = sum(
+    coords.loc[test, "cote"] == "gauche"
+)
+
+test_droite = sum(
+    coords.loc[test, "cote"] == "droite"
+)
+
+
+print()
+print("TRAIN total =", len(train))
+print("  gauche =", train_gauche)
+print("  droite =", train_droite)
+
+print("TEST total =", len(test))
+print("  gauche =", test_gauche)
+print("  droite =", test_droite)
+
 
 coords["categorie"] = "Test"
 
-coords.loc[coords["train"], "categorie"] = "Train"
+coords.loc[train, "categorie"] = "Train"
 
-coords.loc[coords["Y_manquant"], "categorie"] = "Y manquant"
-import matplotlib.pyplot as plt
+coords.loc[
+    coords["Y_manquant"],
+    "categorie"
+] = "Y manquant"
 
-plt.figure(figsize=(8,6))
 
 colors = {
     "Train": "blue",
@@ -140,78 +199,43 @@ colors = {
     "Y manquant": "red"
 }
 
-for g in coords["categorie"].unique():
 
-    sub = coords[coords["categorie"] == g]
+fig2 = go.Figure()
 
-    plt.scatter(
-        sub["Dim.1"],
-        sub["Dim.2"],
-        label=g,
-        color=colors[g],
-        alpha=0.8
+for cat in ["Train", "Test", "Y manquant"]:
+
+    idx = coords.index[
+        coords["categorie"] == cat
+    ]
+
+    fig2.add_trace(
+        go.Scatter(
+            x=coords.loc[idx, "Dim.1"],
+            y=coords.loc[idx, "Dim.2"],
+            mode="markers",
+            marker=dict(
+                color=colors[cat],
+                size=8
+            ),
+            text=idx,
+            hovertemplate="<b>%{text}</b><br>Dim1=%{x:.2f}<br>Dim2=%{y:.2f}<extra></extra>",
+            name=f"{cat} (n={len(idx)})"
+        )
     )
 
+fig2.add_vline(x=0, line_dash="dash")
 
-
-plt.axhline(0, linestyle="--", color="black")
-plt.axvline(0, linestyle="--", color="black")
-
-plt.xlabel("Dim1")
-plt.ylabel("Dim2")
-
-plt.title(" Train / Test / Manquant dans l'espace AFMD")
-
-plt.legend()
-
-plt.show()
-
-
-# =========================================================
-# 10. TEST = BLEUS NON PRIS
-# =========================================================
-
-pays_test = coords.index[
-    (coords["Y_observe"]) &
-    (~coords["train"])
-]
-
-
-# =========================================================
-# 11. DATASETS
-# =========================================================
-
-df_train = df_model.loc[pays_train]
-df_test = df_model.loc[pays_test]
-
-
-# =========================================================
-# 12. RESUME
-# =========================================================
-
-print("Total pays :", len(coords))
-print("Bleus :", coords["Y_observe"].sum())
-print("Rouges :", coords["Y_manquant"].sum())
-
-print("Train :", len(df_train))
-print("Test :", len(df_test))
-
-
-# =========================================================
-# 13. EXPORT
-# =========================================================
-
-df_train.to_csv("scenario1_train.csv")
-df_test.to_csv("scenario1_test.csv")
-
-table_voisins.to_csv("scenario1_neighbors.csv")
-
-pd.Series(pays_train).to_csv(
-    "scenario1_train_countries.csv",
-    index=False
+fig2.update_layout(
+    title=f"Split train/test p={p}",
+    width=700,
+    height=550
 )
 
-pd.Series(pays_test).to_csv(
-    "scenario1_test_countries.csv",
-    index=False
-)
+fig2.show()
+
+df_model.loc[train].to_csv("train70.csv")
+df_model.loc[test].to_csv("test70.csv")
+
+print()
+print("train70.csv :", len(train))
+print("test70.csv :", len(test))
