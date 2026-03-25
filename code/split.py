@@ -5,7 +5,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-p = 0.7
+p = 0.8
 k = 10
 SEED = 123
 
@@ -233,9 +233,5 @@ fig2.update_layout(
 
 fig2.show()
 
-df_model.loc[train].to_csv("train70.csv")
-df_model.loc[test].to_csv("test70.csv")
-
-print()
-print("train70.csv :", len(train))
-print("test70.csv :", len(test))
+df_model.loc[train].to_csv("train90.csv")
+df_model.loc[test].to_csv("test90.csv")
