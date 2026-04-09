@@ -129,31 +129,79 @@ def prepare_data():
 
 def describe_df(df, name):
 
-    cols = df.columns
-    real_cols = list(cols)
+    cols = list(df.columns)
 
-# remove Country if present
-    if "Country" in real_cols:
-        real_cols.remove("Country")
+    # ----------------------------
+    # reference list of REAL variables
+    # based on original Excel
+    # ----------------------------
 
-# remove dummies
-    real_cols = [
-    c for c in real_cols
-    if not (
-        c.startswith("Income Group_")
-        or c.startswith("Quality Score_")
-        or c.startswith("Region_")
-    )
+    real_reference = [
+        "Data Quality",
+        "SDGi",
+        "Life Expectancy",
+        "HDI",
+        "Per Capita GDP",
+        "Region",
+        "Income Group",
+        "Population (millions)",
+
+        # production
+        "Cropland_Footprint_Production",
+        "Grazing_Footprint_Production",
+        "Forest_Footprint_Production",
+        "Fish_Footprint_Production",
+        "BuiltUp_Footprint_Production",
+        "Carbon_Footprint_Production",
+        "Total_Footprint_Production",
+
+        # consumption
+        "Cropland_Footprint_Consumption",
+        "Grazing_Footprint_Consumption",
+        "Forest_Footprint_Consumption",
+        "Fish_Footprint_Consumption",
+        "BuiltUp_Footprint_Consumption",
+        "Carbon_Footprint_Consumption",
+        "Total_Footprint_Consumption",
+
+        # biocapacity
+        "Cropland",
+        "Grazing land",
+        "Forest land",
+        "Fishing ground",
+        "BuiltUp_Biocapacity",
+        "Total_Biocapacity",
+
+        # derived
+        "Ecological (Deficit) or Reserve",
+        "Number of Earths required",
+        "Number of Countries required",
+
+        # target
+        "Overshoot_Day_DOY"
     ]
 
-# remove codes if categorical exists
-    if "Income Group" in real_cols and "Income_Group_Code" in real_cols:
-        real_cols.remove("Income_Group_Code")
 
-    if "Quality Score" in real_cols and "Quality_Score_Code" in real_cols:
-        real_cols.remove("Quality_Score_Code")
+    # ----------------------------
+    # count real variables present
+    # ----------------------------
 
-    n_real_vars = len(real_cols)
+    present_real = [c for c in real_reference if c in cols]
+
+    n_real_vars = len(present_real)
+
+
+    # ----------------------------
+    # total variables (real columns)
+    # ----------------------------
+
+    n_total_vars = len(cols)
+
+
+    # ----------------------------
+    # flags
+    # ----------------------------
+
     has_dummies = any(
         c.startswith("Income Group_")
         or c.startswith("Quality Score_")
@@ -185,6 +233,10 @@ def describe_df(df, name):
     has_country_index = df.index.name == "Country"
 
 
+    # ----------------------------
+    # missingness counts
+    # ----------------------------
+
     if "Overshoot_Day_DOY" in cols:
 
         y = df["Overshoot_Day_DOY"]
@@ -207,10 +259,11 @@ def describe_df(df, name):
         n_Xmissing_Ypresent = np.nan
         n_Xmissing_Ymissing = np.nan
 
+
     return {
         "DF": name,
         "Pays": df.shape[0],
-        "Variables": df.shape[1],
+        "Variables": n_total_vars,
         "Variables_réelles": n_real_vars,
         "Dummies": has_dummies,
         "Numérique": has_codes,
@@ -243,8 +296,10 @@ if __name__ == "__main__":
     print("\nComparaison des df \n")
     print(compare_df.to_string())
 
+
+if __name__ == "__main__":
     df_imputation, df_model, df_famd_complete, df_famd_model = prepare_data()
-    df_model.to_csv("df_model.csv")
     df_imputation.to_csv("df_imputation.csv")
     df_famd_complete.to_csv("df_famd_complete.csv", index=False)
     df_famd_model.to_csv("df_famd_model.csv", index=False)
+    df_model.to_csv("df_model.csv")

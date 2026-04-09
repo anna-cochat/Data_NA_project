@@ -1,71 +1,107 @@
-from nettoyage import prepare_data
+import pandas as pd
+import numpy as np
+import math
 import statsmodels.api as sm
 
-df_imputation, df_model = prepare_data()
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
 
-full_cc = df_model.dropna()
+from nettoyage import prepare_data
+from split70 import split
 
-print("Train lignes:", len(full_cc))
+seed = 123
+np.random.seed(seed)
 
 y_var = "Overshoot_Day_DOY"
 
-y = full_cc[y_var]
+df_imputation, df_model, df_famd_complete, df_famd_model = prepare_data()
 
-# Toutes les colonnes sauf la cible, filtrées directement
-X = full_cc.drop(columns=[y_var])
+df_obs = df_model[df_model[y_var].notna()].copy()
 
-# vérification qu'il n'y a pas de valeur unique dans les colonnes
-X = X[[c for c in X.columns if X[c].nunique() > 1]]
+coords = pd.read_csv("famd_model_coords.csv").set_index("Country")
 
-assert X.isna().sum().sum() == 0
+train_idx, test_idx = split(
+    df_model,
+    coords,
+    p=0.7,
+    k=10,
+    seed=123
+)
 
-def backward_stepwise_aic(X, y):
-    X = sm.add_constant(X)
+df_train = df_obs.loc[train_idx]
+df_test  = df_obs.loc[test_idx]
+
+X_train = df_train.drop(columns=[y_var])
+y_train = df_train[y_var]
+
+X_test = df_test.drop(columns=[y_var])
+y_test = df_test[y_var]
+
+def backward_stepwise(X, y):
+
     remaining = list(X.columns)
-    current_aic = sm.OLS(y, X[remaining]).fit().aic
+    best_aic = np.inf
+
     while True:
-        aic_candidates = []
+        aic_with_vars = []
+
         for var in remaining:
-            if var == "const":
-                continue
-            trial_vars = [v for v in remaining if v != var]
-            model = sm.OLS(y, X[trial_vars]).fit()
-            aic_candidates.append((model.aic, var, model, trial_vars))
-        best_aic, worst_var, best_model, best_vars = min(aic_candidates, key=lambda x: x[0])
-        
-        if best_aic < current_aic:
+            vars_try = [v for v in remaining if v != var]
+
+            X_try = sm.add_constant(X[vars_try])
+            model = sm.OLS(y, X_try).fit()
+
+            aic_with_vars.append((model.aic, var, vars_try))
+
+        aic_with_vars.sort()
+        best_new_aic, var_removed, best_vars = aic_with_vars[0]
+
+        if best_new_aic < best_aic:
             remaining = best_vars
-            current_aic = best_aic
-            final_model = best_model
+            best_aic = best_new_aic
         else:
             break
 
-    return final_model, remaining
+    return remaining
 
+selected_vars = backward_stepwise(X_train, y_train)
 
-step_model, selected_vars = backward_stepwise_aic(X, y)
-
-print("Variables sélectionnées :")
+print("\nVariables sélectionnées")
 print(selected_vars)
 
-print(step_model.summary())
+rf = RandomForestRegressor(
+    n_estimators=500,
+    random_state=123
+)
+
+rf.fit(X_train[selected_vars], y_train)
+
+y_pred_train = rf.predict(X_train[selected_vars])
+y_pred_test  = rf.predict(X_test[selected_vars])
+
+rmse_train = math.sqrt(mean_squared_error(y_train, y_pred_train))
+rmse_test  = math.sqrt(mean_squared_error(y_test, y_pred_test))
+
+print("\nRMSE train:", rmse_train)
+print("RMSE test :", rmse_test)
 
 
-########## VARIABLES SELECTIONNEES : ##########
+pred_test_df = pd.DataFrame({
+    "Country": X_test.index,
+    "y_true": y_test.values,
+    "y_pred": y_pred_test
+})
 
-# SDGi
-# Life Expectancy
-# HDI
-# Per Capita GDP
-# Population (millions)
-# Cropland_Footprint_Production
-# BuiltUp_Footprint_Production
-# Cropland_Footprint_Consumption
-# Forest_Footprint_Consumption
-# Fish_Footprint_Consumption
-# Cropland
-# Grazing land
-# Ecological (Deficit) or Reserve
-# Number of Earths required
-# Income Group_HI
-# Region_Other Europe
+
+print("\nPrédictions\n")
+print(pred_test_df.head())
+
+pred_train_df = pd.DataFrame({
+    "Country": X_train.index,
+    "y_true": y_train.values,
+    "y_pred": y_pred_train
+})
+
+import joblib
+joblib.dump(rf, "rf_model.pkl")
+joblib.dump(selected_vars, "selected_vars.pkl")
