@@ -1,324 +1,248 @@
 import pandas as pd
 import numpy as np
+import joblib
 
 from nettoyage import prepare_data
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.metrics.pairwise import euclidean_distances
+import plotly.graph_objects as go
 
+y_var = "Overshoot_Day_DOY"
 
-# --------------------------------------------------
-# 1. CHARGEMENT ET PRÉPARATION DES DONNÉES
-# --------------------------------------------------
-df_imputation, df_model,_,_ = prepare_data()
+df_imputation, df_model, df_famd_complete, df_famd_model = prepare_data()
 
-variable_cible = "Overshoot_Day_DOY"
+coords = pd.read_csv("famd_model_coords.csv").set_index("Country")
 
+common = df_model.index.intersection(coords.index)
 
-# --------------------------------------------------
-# 2. LISTE DES VARIABLES EXPLICATIVES
-# --------------------------------------------------
+df_model = df_model.loc[common].copy()
+coords = coords.loc[common].copy()
 
-variables_exp_completes = [
-    'SDGi','HDI','Per Capita GDP','Population (millions)',
-    'Cropland_Footprint_Production','Grazing_Footprint_Production','Forest_Footprint_Production',
-    'Fish_Footprint_Production','BuiltUp_Footprint_Production','Carbon_Footprint_Production',
-    'Cropland_Footprint_Consumption','Grazing_Footprint_Consumption','Forest_Footprint_Consumption',
-    'Fish_Footprint_Consumption','Carbon_Footprint_Consumption',
-    'Cropland','Grazing land','Forest land','Fishing ground','Income Group_LM','Income Group_UM','Income Group_HI',
-    'Quality Score_2B','Quality Score_2C','Quality Score_3A',
-    'Region_Asia-Pacific','Region_Central America/Caribbean','Region_EU',
-    'Region_Middle East/Central Asia','Region_North America','Region_Other Europe','Region_South America'
-]
+rf = joblib.load("rf_model.pkl")
+selected_vars = joblib.load("selected_vars.pkl")
 
+df_model["y_pred"] = rf.predict(df_model[selected_vars])
 
-# --------------------------------------------------
-# 3. DATASET UTILISABLE POUR SCENARIO 2
-# (complete predictors)
-# --------------------------------------------------
-
-df_scenario2 = df_model.dropna(subset=variables_exp_completes)
-
-print("Countries usable for Scenario 2:", len(df_scenario2))
-
-
-# --------------------------------------------------
-# 4. MODÈLE 1 : GRADIENT BOOSTING
-# --------------------------------------------------
-
-variables_valides_all = [
-    c for c in variables_exp_completes if df_scenario2[c].nunique() > 1
-]
-
-df_train_all = df_scenario2[df_scenario2[variable_cible].notna()]
-df_a_predire_all = df_scenario2[df_scenario2[variable_cible].isna()]
-
-print("Lignes d'entraînement (toutes variables) :", len(df_train_all))
-print("Pays à prédire :", len(df_a_predire_all))
-
-X_train_all = df_train_all[variables_valides_all]
-y_train_log = np.log(df_train_all[variable_cible])
-
-modele_gb = GradientBoostingRegressor(
-    n_estimators=500,
-    learning_rate=0.05,
-    max_depth=3,
-    random_state=123
+df_model["cat"] = np.where(
+    df_model[y_var].isna(),
+    "Manquant",
+    "Observé"
 )
 
-modele_gb.fit(X_train_all, y_train_log)
+# Palette personnalisée
+colors = {
+    "Observé": "#035063", # Ocean Teal
+    "Manquant": "#c21047"  # Mango Orange
+}
 
-X_pred_all = df_a_predire_all[variables_valides_all]
+dim_cols = [c for c in coords.columns if c.startswith("Dim.")]
 
-pred_log = modele_gb.predict(X_pred_all)
-pred_gb = np.exp(pred_log)
-
-df_a_predire_all["Overshoot_pred_GB"] = pred_gb
-
-
-# --------------------------------------------------
-# 5. MODÈLE 2 : RANDOM FOREST
-# --------------------------------------------------
-
-
-
-df_train_clean = df_scenario2[df_scenario2[variable_cible].notna()]
-df_a_predire_clean = df_scenario2[df_scenario2[variable_cible].isna()]
-
-print("Lignes d'entraînement (sans variables dérivées) :", len(df_train_clean))
-print("Pays à prédire :", len(df_a_predire_clean))
-
-X_train_clean = df_train_clean
-y_train_log = np.log(df_train_clean[variable_cible])
-
-modele_rf = RandomForestRegressor(
-    n_estimators=500,
-    random_state=123
+dist = pd.DataFrame(
+    euclidean_distances(coords[dim_cols]),
+    index=coords.index,
+    columns=coords.index
 )
 
-modele_rf.fit(X_train_clean, y_train_log)
+k = 5
+hover_text = []
 
-X_pred = df_a_predire_clean
+for country in df_model.index:
 
-pred_log = modele_rf.predict(X_pred)
-pred_rf = np.exp(pred_log)
+    y_real = df_model.loc[country, y_var]
+    y_pred = df_model.loc[country, "y_pred"]
 
-df_a_predire_clean["Overshoot_pred_RF"] = pred_rf
+    real_txt = "manquant" if pd.isna(y_real) else round(y_real, 1)
 
+    neighbors = dist.loc[country].nsmallest(k + 1).index[1:]
 
-# --------------------------------------------------
-# 6. FUSION DES PRÉDICTIONS
-# --------------------------------------------------
+    neigh_txt = ""
 
-df_predictions = df_scenario2.copy()
+    for n in neighbors:
+        y_n = df_model.loc[n, y_var]
+        y_n_pred = df_model.loc[n, "y_pred"]
 
-df_predictions.loc[df_a_predire_all.index, "Overshoot_pred_GB"] = df_a_predire_all["Overshoot_pred_GB"]
-df_predictions.loc[df_a_predire_clean.index, "Overshoot_pred_RF"] = df_a_predire_clean["Overshoot_pred_RF"]
+        y_n_txt = "manquant" if pd.isna(y_n) else round(y_n, 1)
 
-print("\nAperçu des prédictions\n")
+        neigh_txt += f"{n}: réel={y_n_txt}, préd={round(y_n_pred,1)}<br>"
 
-print(
-    df_predictions.loc[
-        df_predictions[variable_cible].isna(),
-        ["Overshoot_pred_GB","Overshoot_pred_RF"]
-    ].head()
+    txt = (
+        f"<b>{country}</b><br>"
+        f"Réel: {real_txt}<br>"
+        f"Prédit: {round(y_pred,1)}<br><br>"
+        f"<b>5 plus proches voisins:</b><br>{neigh_txt}"
+    )
+
+    hover_text.append(txt)
+
+# =========================================================
+# FAMD SPACE
+# =========================================================
+
+fig = go.Figure()
+
+for cat in ["Observé", "Manquant"]:
+
+    idx = df_model.index[df_model["cat"] == cat]
+
+    fig.add_trace(
+        go.Scatter(
+            x=coords.loc[idx, "Dim.1"],
+            y=coords.loc[idx, "Dim.2"],
+            mode="markers",
+            hoverinfo="text",
+            hovertext=[hover_text[df_model.index.get_loc(c)] for c in idx],
+            marker=dict(size=9, color=colors[cat]),
+            name=cat
+        )
+    )
+
+fig.add_vline(x=0, line_dash="dash", line_color="#999999")
+
+fig.update_layout(
+    title="Projection FAMD avec prédictions Random Forest et k plus proches voisins",
+    hovermode="closest",
+    height=650,
+    template="plotly_white",
+    paper_bgcolor="#ffffff",
+    plot_bgcolor="#ffffff"
 )
 
+fig.show()
 
-# --------------------------------------------------
-# 7. CHARGEMENT DES COORDONNÉES FAMD
-# --------------------------------------------------
+# =========================================================
+# PREDICTED vs REAL
+# =========================================================
 
-coords = pd.read_csv("famd_coordinates.csv").set_index("Country")
+df_obs_plot = df_model[df_model[y_var].notna()].copy()
 
-print("Countries in FAMD coords:", len(coords.index))
-print("Countries in scenario2 dataset:", len(df_scenario2.index))
+fig_pr = go.Figure()
 
-eig = pd.read_csv("code/famd_eigenvalues.csv")
-
-cumvar = eig["percentage of variance"].cumsum()
-k = (cumvar >= 80).idxmax() + 1
-
-print("\nDimensions FAMD utilisées :", k)
-
-coords_k = coords.iloc[:, :k]
-
-
-# --------------------------------------------------
-# 8. MATRICE DES DISTANCES
-# --------------------------------------------------
-
-distances_famd = pd.DataFrame(
-    euclidean_distances(coords_k),
-    index=coords_k.index,
-    columns=coords_k.index
+fig_pr.add_trace(
+    go.Scatter(
+        x=df_obs_plot[y_var],
+        y=df_obs_plot["y_pred"],
+        mode="markers",
+        name="Observations",
+        marker=dict(color="#035063", size=8)  # Ocean Teal
+    )
 )
 
-print("\nAperçu matrice des distances\n")
-print(distances_famd.iloc[:5, :5])
+min_val = min(df_obs_plot[y_var].min(), df_obs_plot["y_pred"].min())
+max_val = max(df_obs_plot[y_var].max(), df_obs_plot["y_pred"].max())
 
+fig_pr.add_trace(
+    go.Scatter(
+        x=[min_val, max_val],
+        y=[min_val, max_val],
+        mode="lines",
+        name="Ligne parfaite (y = x)",
+        line=dict(color="#c21047", dash="dash")  # Mango Orange
+    )
+)
 
-# --------------------------------------------------
-# 9. VALIDATION PAR VOISINS
-# --------------------------------------------------
+fig_pr.update_layout(
+    title="Comparaison des valeurs prédites et observées",
+    xaxis_title="Valeurs réelles",
+    yaxis_title="Valeurs prédites",
+    height=600,
+    template="plotly_white",
+    paper_bgcolor="#ffffff",
+    plot_bgcolor="#ffffff"
+)
 
-pays_predits = df_predictions.loc[
-    df_predictions[variable_cible].isna()
-].index
+fig_pr.show()
 
-lignes = []
+# =========================================================
+# FEATURE IMPORTANCE
+# =========================================================
 
-for pays in pays_predits:
+imp = pd.Series(rf.feature_importances_, index=selected_vars)
+imp = imp.sort_values()
 
-    if pays not in distances_famd.index:
+fig_imp = go.Figure()
+
+fig_imp.add_trace(
+    go.Bar(
+        x=imp.values,
+        y=imp.index,
+        orientation="h",
+        marker=dict(color="#c21047")  # Sunflower Yellow
+    )
+)
+
+fig_imp.update_layout(
+    title="Importance des variables dans le modèle Random Forest",
+    height=700,
+    template="plotly_white",
+    paper_bgcolor="#ffffff",
+    plot_bgcolor="#ffffff"
+)
+
+fig_imp.show()
+
+# =========================================================
+# KNN CONSISTENCY
+# =========================================================
+
+k = 5
+
+knn_df = []
+
+for country in df_model.index:
+
+    neighbors = dist.loc[country].nsmallest(k + 1).index[1:]
+
+    neigh_obs = [
+        df_model.loc[n, y_var]
+        for n in neighbors
+        if not pd.isna(df_model.loc[n, y_var])
+    ]
+
+    if len(neigh_obs) == 0:
         continue
 
-    pred_gb = df_predictions.loc[pays, "Overshoot_pred_GB"]
-    pred_rf = df_predictions.loc[pays, "Overshoot_pred_RF"]
+    knn_mean = np.mean(neigh_obs)
 
-    voisins = distances_famd.loc[pays].sort_values().index[1:6]
+    knn_df.append({
+        "Country": country,
+        "y_pred": df_model.loc[country, "y_pred"],
+        "knn_mean": knn_mean
+    })
 
-    for v in voisins:
+knn_df = pd.DataFrame(knn_df)
 
-        overshoot_obs = df_predictions.loc[v, variable_cible]
+fig_knn = go.Figure()
 
-        lignes.append({
-
-            "Pays_prédit": pays,
-            "Prediction_GB": pred_gb,
-            "Prediction_RF": pred_rf,
-            "Voisin": v,
-            "Distance_FAMD": distances_famd.loc[pays, v],
-            "Statut_voisin":
-                "Observé" if pd.notna(overshoot_obs) else "Manquant",
-            "Overshoot_observé_voisin": overshoot_obs,
-            "Prediction_voisin_GB":
-                df_predictions.loc[v, "Overshoot_pred_GB"],
-            "Prediction_voisin_RF":
-                df_predictions.loc[v, "Overshoot_pred_RF"]
-        })
-
-
-table_voisins = pd.DataFrame(lignes)
-
-table_voisins = table_voisins.sort_values(
-    ["Pays_prédit","Distance_FAMD"]
+fig_knn.add_trace(
+    go.Scatter(
+        x=knn_df["knn_mean"],
+        y=knn_df["y_pred"],
+        mode="markers",
+        name="Pays",
+        marker=dict(color="#035063", size=8)  # Ocean Teal
+    )
 )
 
+min_val = min(knn_df["knn_mean"].min(), knn_df["y_pred"].min())
+max_val = max(knn_df["knn_mean"].max(), knn_df["y_pred"].max())
 
-# --------------------------------------------------
-# 10. AFFICHAGE
-# --------------------------------------------------
-
-pd.set_option("display.max_columns", None)
-pd.set_option("display.width", None)
-
-print("\nTable de validation par voisins\n")
-print(table_voisins.head(20))
-
-print("\nRésumé statut des voisins\n")
-print(table_voisins["Statut_voisin"].value_counts())
-
-
-# --------------------------------------------------
-# 11. EXPORT
-# --------------------------------------------------
-
-#table_voisins.to_csv(
- #   "validation_voisins_famd_overshoot.csv",
-  #  index=False
-#)
-
-#print("\nTable exportée : validation_voisins_famd_overshoot.csv")
-
-
-# node
-
-import pandas as pd
-import networkx as nx
-
-df = pd.read_csv("validation_voisins_famd_overshoot.csv")
-
-G = nx.Graph()
-
-for _, row in df.iterrows():
-
-    pred = row["Pays_prédit"]
-    neigh = row["Voisin"]
-
-    # predicted node
-    if pred not in G:
-        G.add_node(
-            pred,
-            type="predicted",
-            overshoot=row["Prediction_RF"]
-        )
-
-    # neighbour node
-    if neigh not in G:
-
-        if row["Statut_voisin"] == "Observé":
-            neigh_type = "observed"
-            neigh_value = row["Overshoot_observé_voisin"]
-        else:
-            neigh_type = "missing"
-            neigh_value = row["Prediction_voisin_RF"]
-
-        G.add_node(
-            neigh,
-            type=neigh_type,
-            overshoot=neigh_value
-        )
-
-    # edge
-    G.add_edge(pred, neigh, weight=row["Distance_FAMD"])
-
-
-nx.write_gexf(G, "overshoot_network.gexf")
-import matplotlib.pyplot as plt
-
-# layout
-pos = nx.spring_layout(G, seed=42)
-
-# colors by node type
-colors = []
-sizes = []
-
-for node, data in G.nodes(data=True):
-
-    if data["type"] == "predicted":
-        colors.append("orange")
-    elif data["type"] == "observed":
-        colors.append("green")
-    else:
-        colors.append("lightgrey")
-
-    # scale node size by overshoot value
-    val = data.get("overshoot", 300)
-    sizes.append(val * 0.8)  # scaling factor
-
-
-plt.figure(figsize=(12,10))
-
-nx.draw_networkx_nodes(
-    G,
-    pos,
-    node_color=colors,
-    node_size=sizes,
-    alpha=0.9
+fig_knn.add_trace(
+    go.Scatter(
+        x=[min_val, max_val],
+        y=[min_val, max_val],
+        mode="lines",
+        name="Ligne parfaite (y = x)",
+        line=dict(color="#c21047", dash="dash")  # Mango Orange
+    )
 )
 
-nx.draw_networkx_edges(
-    G,
-    pos,
-    alpha=0.3
+fig_knn.update_layout(
+    title="Cohérence entre prédictions et moyenne des k plus proches voisins",
+    xaxis_title="Moyenne des voisins (valeurs réelles)",
+    yaxis_title="Valeurs prédites",
+    height=600,
+    template="plotly_white",
+    paper_bgcolor="#ffffff",
+    plot_bgcolor="#ffffff"
 )
 
-nx.draw_networkx_labels(
-    G,
-    pos,
-    font_size=7
-)
-
-plt.title("Neighbour network based on FAMD similarity")
-plt.axis("off")
-plt.show()
+fig_knn.show()
