@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 y_var = "Overshoot_Day_DOY"
 
 df_imputation, df_model, df_famd_model = prepare_data()
-coords = pd.read_csv("famd_model_coords.csv").set_index("Country")
+coords = pd.read_csv("propreMA/famd_model_coords.csv").set_index("Country")
 
 common = df_model.index.intersection(coords.index)
 

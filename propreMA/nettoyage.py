@@ -3,7 +3,7 @@ import numpy as np
 
 def load_mydf():
 
-    df = pd.read_excel("toutlespays.xlsx")
+    df = pd.read_excel("propreMA/toutlespays.xlsx")
 
     rename_dict = {
         "actual \nCountry Overshoot Day \n2018": "Overshoot Day",

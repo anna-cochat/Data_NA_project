@@ -17,7 +17,7 @@ y_var = "Overshoot_Day_DOY"
 df_imputation, df_model, df_famd_model = prepare_data()
 df_obs = df_model[df_model[y_var].notna()].copy()
 
-coords = pd.read_csv("famd_model_coords.csv").set_index("Country")
+coords = pd.read_csv("propreMA/famd_model_coords.csv").set_index("Country")
 
 train_idx, test_idx = split(
     df_model,
